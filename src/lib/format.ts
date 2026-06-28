@@ -1,5 +1,17 @@
 const STROOPS = 10_000_000n;
 
+// USDC on Stellar uses 7 decimals, same scale as XLM stroops. These aliases
+// make call sites read clearly while reusing the validated conversion logic.
+export function usdcToUnits(usdc: string): bigint {
+  return xlmToStroops(usdc);
+}
+export function unitsToUsdc(units: bigint): string {
+  return stroopsToXlm(units);
+}
+export function formatUsdc(units: bigint): string {
+  return `${stroopsToXlm(units)} USDC`;
+}
+
 export function truncate(addr: string): string {
   if (addr.length <= 12) return addr;
   return `${addr.slice(0, 5)}…${addr.slice(-4)}`;
