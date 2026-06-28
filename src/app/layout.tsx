@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { I18nProvider } from "@/i18n/I18nProvider";
+import FeedbackForm from "@/components/FeedbackForm";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -40,7 +41,10 @@ export default function RootLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col">
-        <I18nProvider>{children}</I18nProvider>
+        <I18nProvider>
+          {children}
+          <FeedbackForm />
+        </I18nProvider>
         <Toaster theme="dark" position="bottom-right" />
         <Analytics />
       </body>
