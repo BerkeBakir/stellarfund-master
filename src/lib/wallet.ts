@@ -1,9 +1,11 @@
 'use client';
 import { StellarWalletsKit, Networks } from '@creit.tech/stellar-wallets-kit';
-import { FreighterModule } from '@creit.tech/stellar-wallets-kit/modules/freighter';
-import { xBullModule, XBULL_ID } from '@creit.tech/stellar-wallets-kit/modules/xbull';
+import { FreighterModule, FREIGHTER_ID } from '@creit.tech/stellar-wallets-kit/modules/freighter';
+import { xBullModule } from '@creit.tech/stellar-wallets-kit/modules/xbull';
 import { AlbedoModule } from '@creit.tech/stellar-wallets-kit/modules/albedo';
 import { LobstrModule } from '@creit.tech/stellar-wallets-kit/modules/lobstr';
+import { RabetModule } from '@creit.tech/stellar-wallets-kit/modules/rabet';
+import { HanaModule } from '@creit.tech/stellar-wallets-kit/modules/hana';
 import { NETWORK_PASSPHRASE } from './config';
 
 let inited = false;
@@ -11,8 +13,17 @@ function ensureInit() {
   if (inited) return;
   StellarWalletsKit.init({
     network: NETWORK_PASSPHRASE as Networks,
-    selectedWalletId: XBULL_ID,
-    modules: [new FreighterModule(), new xBullModule(), new AlbedoModule(), new LobstrModule()],
+    selectedWalletId: FREIGHTER_ID,
+    // Albedo is web-based (no install needed); the rest are browser extensions
+    // and only appear as connectable when the user has them installed.
+    modules: [
+      new FreighterModule(),
+      new AlbedoModule(),
+      new xBullModule(),
+      new LobstrModule(),
+      new RabetModule(),
+      new HanaModule(),
+    ],
   });
   inited = true;
 }
