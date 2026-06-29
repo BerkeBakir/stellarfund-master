@@ -1,9 +1,10 @@
+import { scValToNative, xdr } from '@stellar/stellar-sdk';
+import { server } from './soroban';
 import { listCampaigns } from './factory';
-import { getCampaignEvents, fetchLatestLedger } from './events';
 
 export type Backer = {
   address: string;
-  totalContributed: bigint; // USDC base units (sums contrib events seen in window)
+  totalContributed: bigint; // USDC base units
   contributions: number;
   lastLedger: number;
   lastTxHash: string;
@@ -18,18 +19,25 @@ export type ProofData = {
   latestLedger: number;
 };
 
-// Testnet RPC keeps roughly a 24h event window (~17280 ledgers). We look back a
-// little under that to stay inside retention.
-const LOOKBACK_LEDGERS = 17000;
+// Soroban RPC scans only a bounded number of ledgers per getEvents call and
+// returns a continuation cursor — even for empty pages. We therefore start near
+// the oldest retained ledger and paginate forward via the cursor until we reach
+// the latest ledger, so no contribution is missed.
+const LOOKBACK_LEDGERS = 100_000;
+const MAX_PAGES = 80;
 
-/**
- * Build the user-interaction proof from on-chain `contrib` events across every
- * campaign. Each backer is a real wallet that signed a contribution — permanent,
- * public evidence. Dedupes by address. (stellar.expert holds the full history
- * beyond the RPC retention window as a backstop.)
- */
+function ledgerFromCursor(cursor: string): number {
+  // cursor = "<toid>-<index>"; toid = (ledger << 32) | ...
+  try {
+    const toid = BigInt(cursor.split('-')[0]);
+    return Number(toid >> 32n);
+  } catch {
+    return 0;
+  }
+}
+
 export async function getProofData(): Promise<ProofData> {
-  const latestLedger = await fetchLatestLedger();
+  const latestLedger = (await server.getLatestLedger()).sequence;
   const windowStartLedger = Math.max(latestLedger - LOOKBACK_LEDGERS, 1);
   const campaigns = await listCampaigns();
 
@@ -38,35 +46,59 @@ export async function getProofData(): Promise<ProofData> {
   let totalVolume = 0n;
 
   if (campaigns.length > 0) {
-    const { events } = await getCampaignEvents(windowStartLedger, campaigns);
-    for (const e of events) {
-      if (e.kind !== 'contrib' || !e.topicAddr) continue;
-      const amount = (() => {
+    const filters = [
+      { type: 'contract' as const, contractIds: campaigns, topics: [['*', '*']] },
+    ];
+    let cursor: string | undefined;
+    for (let page = 0; page < MAX_PAGES; page++) {
+      const req = cursor
+        ? { cursor, filters, limit: 10000 }
+        : { startLedger: windowStartLedger, filters, limit: 10000 };
+      const resp = await server.getEvents(req);
+
+      for (const e of resp.events ?? []) {
+        let topic0: string;
+        let topic1: string | null = null;
         try {
-          return BigInt(e.value);
+          const topics = (e.topic as xdr.ScVal[]).map((t) => scValToNative(t));
+          topic0 = String(topics[0]);
+          topic1 = topics[1] != null ? String(topics[1]) : null;
         } catch {
-          return 0n;
+          continue;
         }
-      })();
-      totalContributions += 1;
-      totalVolume += amount;
-      const prev = byAddress.get(e.topicAddr);
-      if (prev) {
-        prev.totalContributed += amount;
-        prev.contributions += 1;
-        if (e.ledger >= prev.lastLedger) {
-          prev.lastLedger = e.ledger;
-          prev.lastTxHash = e.txHash;
+        if (topic0 !== 'contrib' || !topic1) continue;
+
+        let amount = 0n;
+        try {
+          const v = scValToNative(e.value);
+          amount = typeof v === 'bigint' ? v : BigInt(v);
+        } catch {
+          /* keep 0 */
         }
-      } else {
-        byAddress.set(e.topicAddr, {
-          address: e.topicAddr,
-          totalContributed: amount,
-          contributions: 1,
-          lastLedger: e.ledger,
-          lastTxHash: e.txHash,
-        });
+        totalContributions += 1;
+        totalVolume += amount;
+        const prev = byAddress.get(topic1);
+        if (prev) {
+          prev.totalContributed += amount;
+          prev.contributions += 1;
+          if (e.ledger >= prev.lastLedger) {
+            prev.lastLedger = e.ledger;
+            prev.lastTxHash = e.txHash ?? '';
+          }
+        } else {
+          byAddress.set(topic1, {
+            address: topic1,
+            totalContributed: amount,
+            contributions: 1,
+            lastLedger: e.ledger,
+            lastTxHash: e.txHash ?? '',
+          });
+        }
       }
+
+      if (!resp.cursor) break;
+      cursor = resp.cursor;
+      if (ledgerFromCursor(resp.cursor) >= resp.latestLedger) break;
     }
   }
 
