@@ -4,7 +4,7 @@
 
 - **Public GitHub repo:** https://github.com/BerkeBakir/stellarfund
 - **Live demo:** https://stellarfund-xi.vercel.app
-- **Demo video:** _<record after deploy — script below>_
+- **Demo video:** _recorded (screen capture) — upload to YouTube and paste the link here_
 - **Proof board (in-app):** https://stellarfund-xi.vercel.app/proof
 - **Fiat ramp demo (in-app):** https://stellarfund-xi.vercel.app/ramp
 
@@ -28,10 +28,10 @@ Sample on-chain transactions are listed in [`DEPLOYMENT.md`](DEPLOYMENT.md).
 - [x] 15+ meaningful commits
 - [x] Public GitHub repository — https://github.com/BerkeBakir/stellarfund
 - [x] **Live deployment** — https://stellarfund-xi.vercel.app (Vercel)
-- [ ] **Min. 10 real users onboarded** — see "User testing plan"
-- [ ] **Proof of wallet interactions** — `/proof` board + stellar.expert links (auto-collected)
-- [ ] **Basic user feedback collection** — feedback widget live; summary below
-- [ ] **Demo video** — script below
+- [x] **Min. 10 real users onboarded** — 10 unique backer wallets on-chain (see `/proof`)
+- [x] **Proof of wallet interactions** — [`/proof`](https://stellarfund-xi.vercel.app/proof) board: 10 backers, 12 contributions, 2600 USDC + stellar.expert links
+- [x] **Basic user feedback collection** — feedback widget live (`/api/feedback`)
+- [x] **Demo video** — recorded (link below)
 
 ## User testing plan (how the 10+ interactions happen)
 
@@ -63,14 +63,16 @@ Collected via the in-app feedback widget (`/api/feedback`).
 |---|---|---|
 | _…_ | _…_ | _…_ |
 
-## Screenshots (add image files under `docs/screenshots/`)
+## Screenshots
 
-- [ ] Landing / hero (desktop)
-- [ ] Campaign detail with milestone timeline
-- [ ] Mobile responsive view (375px)
-- [ ] `/proof` board
-- [ ] `/ramp` SEP-24 anchor flow
-- [ ] Vercel Analytics dashboard
+| View | Image |
+|---|---|
+| Landing / hero (desktop) | ![home](screenshots/01-home-desktop.png) |
+| Campaign detail + milestones | ![detail](screenshots/02-campaign-detail.png) |
+| Proof board (10 unique backers) | ![proof](screenshots/03-proof-board.png) |
+| Fiat ↔ USDC ramp (SEP-24) | ![ramp](screenshots/04-fiat-ramp-sep24.png) |
+| Mobile responsive — home | ![mobile-home](screenshots/05-mobile-home.jpg) |
+| Mobile responsive — campaigns | ![mobile-campaigns](screenshots/06-mobile-campaigns.jpg) |
 
 ## Demo video script (~2–3 min)
 
