@@ -19,10 +19,18 @@ export async function createCampaign(
   const milestonesVec = xdr.ScVal.scvVec(
     milestones.map((m) => nativeToScVal(m, { type: 'i128' })),
   );
-  return invoke(pk, FACTORY_ID, 'create_campaign', [
+  await invoke(pk, FACTORY_ID, 'create_campaign', [
     new Address(pk).toScVal(),
     nativeToScVal(goal, { type: 'i128' }),
     nativeToScVal(BigInt(deadline), { type: 'u64' }),
     milestonesVec,
   ]);
+  // The Factory appends new campaigns, so the last entry is the one just
+  // created. Retry briefly to absorb RPC indexing lag.
+  for (let i = 0; i < 5; i++) {
+    const list = await listCampaigns().catch(() => [] as string[]);
+    if (list.length > 0) return list[list.length - 1];
+    await new Promise((r) => setTimeout(r, 1500));
+  }
+  throw new Error('Campaign created but its address could not be resolved.');
 }
