@@ -92,7 +92,7 @@ Collected via the in-app feedback widget (`/api/feedback`).
 - **Public GitHub repo:** https://github.com/BerkeBakir/stellarfund-blue
 - **Live demo:** https://stellarfund-blue.vercel.app
 - **Pitch deck:** `docs/StellarFund-Pitch.pptx`
-- **Demo video (full walkthrough):** _<record and paste link>_
+- **Demo video (full walkthrough):** https://youtu.be/ntMAbfhnGQw
 - **Google Form (live):** https://docs.google.com/forms/d/e/1FAIpQLSc68-9vpke9EhgRoir6NSVas_RsJldfz8JoLaBqyUXO42420w/viewform
 - **Google Form questions:** [`docs/GOOGLE_FORM.md`](GOOGLE_FORM.md)
 - **Private analytics dashboard:** `/stats` (on-chain, key-gated)
@@ -108,7 +108,7 @@ Collected via the in-app feedback widget (`/api/feedback`).
 - [x] **On-chain user proof** — 11 unique backer wallets, 17 contributions,
   4,165 USDC of test volume, all publicly verifiable on `/proof` + stellar.expert
 - [x] **Google Form** live for feedback collection (linked in-app + README)
-- [ ] **Full demo video** recorded (in progress; script below)
+- [x] **Full demo video** recorded — https://youtu.be/ntMAbfhnGQw
 - [ ] Analytics screenshot (from the private `/stats` dashboard)
 
 ### Note on user count (transparency)

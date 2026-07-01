@@ -11,7 +11,7 @@ with campaign identity, discovery, more wallets, and feedback-driven iteration. 
 Orange Belt crowdfund engine (Factory → Campaign → Reputation) into a production-shaped product.
 
 🔗 **Live demo:** https://stellarfund-blue.vercel.app
-🎬 **Demo video:** https://youtu.be/BPmoLqUu1rk
+🎬 **Demo video:** https://youtu.be/ntMAbfhnGQw
 🧾 **Proof of users:** https://stellarfund-blue.vercel.app/proof (on-chain unique-backer evidence)
 
 > **Network:** Stellar **Testnet** only. No real funds.
