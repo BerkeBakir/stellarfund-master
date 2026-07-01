@@ -43,7 +43,7 @@ export default function CampaignCard({
         <div className="mb-2 text-xs opacity-60">by {by}</div>
         <div className="mb-1 text-sm">
           {stroopsToXlm(summary.raised)} / {stroopsToXlm(summary.goal)}{' '}
-          <span className="opacity-60">USDC</span>
+          <span className="opacity-60">XLM</span>
         </div>
         <div className="h-2 w-full overflow-hidden rounded-full bg-white/10">
           <div

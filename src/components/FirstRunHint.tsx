@@ -16,8 +16,8 @@ export default function FirstRunHint() {
 
   const steps =
     locale === 'tr'
-      ? ['Cüzdan bağla', 'Tek tık “Get Test USDC”', 'Bir kampanyaya katkı yap']
-      : ['Connect a wallet', 'One tap “Get Test USDC”', 'Contribute to a campaign'];
+      ? ['Cüzdan bağla', 'Cüzdanına biraz XLM ekle', 'Bir kampanyaya katkı yap']
+      : ['Connect a wallet', 'Fund it with a little XLM', 'Contribute to a campaign'];
 
   function dismiss() {
     try {

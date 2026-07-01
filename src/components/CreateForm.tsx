@@ -139,7 +139,7 @@ export default function CreateForm() {
         className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-white"
       />
 
-      <label className="mt-2 text-sm font-medium">Goal (USDC)</label>
+      <label className="mt-2 text-sm font-medium">Goal (XLM)</label>
       <input
         value={goal}
         onChange={(e) => setGoal(e.target.value)}
@@ -189,7 +189,7 @@ export default function CreateForm() {
       ))}
       <div className="flex justify-between text-xs">
         <span className="opacity-60">
-          Sum: {stroopsToXlm(sum)} {goalUnits !== null ? `/ ${stroopsToXlm(goalUnits)}` : ''} USDC
+          Sum: {stroopsToXlm(sum)} {goalUnits !== null ? `/ ${stroopsToXlm(goalUnits)}` : ''} XLM
         </span>
         {goalUnits !== null && allMilestonesOk && !sumMatchesGoal && (
           <span className="text-red-400">Milestones must sum to the goal.</span>

@@ -10,7 +10,7 @@ import LanguageSwitcher from '@/components/LanguageSwitcher';
 import FirstRunHint from '@/components/FirstRunHint';
 import { useAppStore } from '@/store';
 import { getSummary, type Summary } from '@/lib/campaign';
-import { FEEDBACK_FORM_URL, HIDDEN_CAMPAIGNS } from '@/lib/config';
+import { FEEDBACK_FORM_URL, HIDDEN_CAMPAIGNS, ANCHOR_ENABLED } from '@/lib/config';
 import { getAllMetadata, type CampaignMeta, CATEGORIES } from '@/lib/metadata';
 import { filterCampaigns } from '@/lib/discovery';
 import { getProofData } from '@/lib/proof';
@@ -77,9 +77,11 @@ export default function Home() {
       <nav className="flex items-center justify-between">
         <span className="font-bold text-gradient">StellarFund</span>
         <div className="flex items-center gap-3 text-xs">
-          <Link href="/ramp" className="text-indigo-300 underline">
-            {t('nav.fiatRamp')} →
-          </Link>
+          {ANCHOR_ENABLED && (
+            <Link href="/ramp" className="text-indigo-300 underline">
+              {t('nav.fiatRamp')} →
+            </Link>
+          )}
           <Link href="/proof" className="text-indigo-300 underline">
             {t('nav.proof')} →
           </Link>

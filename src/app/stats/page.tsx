@@ -99,8 +99,8 @@ function Dashboard() {
     ['Campaigns', String(rows.length)],
     ['Unique backers', String(proof.uniqueBackers)],
     ['Contributions', String(proof.totalContributions)],
-    ['Volume (USDC)', stroopsToXlm(proof.totalVolume)],
-    ['Total raised (USDC)', stroopsToXlm(totalRaised)],
+    ['Volume (XLM)', stroopsToXlm(proof.totalVolume)],
+    ['Total raised (XLM)', stroopsToXlm(totalRaised)],
   ];
 
   return (
@@ -145,7 +145,7 @@ function Dashboard() {
             <div key={r.address} className="flex items-center justify-between text-sm">
               <span className="truncate">{r.meta?.title ?? r.address.slice(0, 10) + '…'}</span>
               <span className="font-mono opacity-80">
-                {stroopsToXlm(r.raised)} / {stroopsToXlm(r.goal)} USDC
+                {stroopsToXlm(r.raised)} / {stroopsToXlm(r.goal)} XLM
               </span>
             </div>
           ))}

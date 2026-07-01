@@ -12,7 +12,7 @@ import {
   type Summary,
   type Milestone,
 } from '@/lib/campaign';
-import { getTestUsdc, getUsdcBalance } from '@/lib/onboard';
+import { getXlmBalance } from '@/lib/onboard';
 import { getAllMetadata, type CampaignMeta } from '@/lib/metadata';
 import { useAppStore } from '@/store';
 import { stroopsToXlm, xlmToStroops, pct, timeLeft, truncate } from '@/lib/format';
@@ -25,7 +25,7 @@ export default function CampaignDetail({ id }: { id: string }) {
   const [summary, setSummary] = useState<Summary | null>(null);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
   const [myContribution, setMyContribution] = useState<bigint>(0n);
-  const [usdcBalance, setUsdcBalance] = useState<number | null>(null);
+  const [xlmBalance, setXlmBalance] = useState<number | null>(null);
   const [meta, setMeta] = useState<CampaignMeta | null>(null);
   const [amount, setAmount] = useState('');
   const [busy, setBusy] = useState(false);
@@ -55,7 +55,7 @@ export default function CampaignDetail({ id }: { id: string }) {
       setMilestones(m);
       if (publicKey) {
         setMyContribution(await contributionOf(id, publicKey));
-        setUsdcBalance(await getUsdcBalance(publicKey));
+        setXlmBalance(await getXlmBalance(publicKey));
       }
     } catch {
       /* ignore */
@@ -76,9 +76,9 @@ export default function CampaignDetail({ id }: { id: string }) {
         const c = await contributionOf(id, publicKey).catch(() => null);
         if (!active) return;
         if (c !== null) setMyContribution(c);
-        const bal = await getUsdcBalance(publicKey).catch(() => null);
+        const bal = await getXlmBalance(publicKey).catch(() => null);
         if (!active) return;
-        setUsdcBalance(bal);
+        setXlmBalance(bal);
       }
     })();
     return () => {
@@ -99,9 +99,9 @@ export default function CampaignDetail({ id }: { id: string }) {
       await refresh();
     } catch (e) {
       let msg = e instanceof Error ? e.message : `${label} failed`;
-      if (/#13|trustline/i.test(msg)) {
-        msg = 'You need test USDC first — tap “Get Test USDC”.';
-        setUsdcBalance(null);
+      if (/insufficient|balance|underfunded|txINSUFFICIENT/i.test(msg)) {
+        msg = 'Transaction failed — make sure your wallet holds enough XLM (your contribution plus a little for the base reserve and fees).';
+        if (publicKey) setXlmBalance(await getXlmBalance(publicKey).catch(() => null));
       }
       setTxResult(null, msg);
       setTxStatus('fail');
@@ -111,26 +111,11 @@ export default function CampaignDetail({ id }: { id: string }) {
     }
   }
 
-  async function handleGetUsdc() {
-    if (!publicKey) return;
-    setBusy(true);
-    const tid = toast.loading('Funding account, setting USDC trustline, minting…');
-    try {
-      await getTestUsdc(publicKey);
-      toast.success('Got 500 Test USDC!', { id: tid });
-      setUsdcBalance(await getUsdcBalance(publicKey));
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Could not get test USDC.', { id: tid });
-    } finally {
-      setBusy(false);
-    }
-  }
-
   if (!summary) return <p className="text-sm opacity-60">Loading campaign…</p>;
 
-  // null = no USDC trustline yet; 0 = trustline but empty. Either way the user
-  // must get test USDC before contributing.
-  const needsUsdc = usdcBalance === null || usdcBalance <= 0;
+  // Native XLM: the account must exist and hold enough XLM to contribute plus
+  // cover the base reserve and network fees. null = account not funded yet.
+  const lowBalance = xlmBalance === null || xlmBalance < 1;
 
   const percent = pct(summary.raised, summary.goal);
   const ended = now > summary.deadline;
@@ -150,7 +135,7 @@ export default function CampaignDetail({ id }: { id: string }) {
   const overGoal = amtOk && remaining > 0n && amt > remaining;
 
   const canContribute =
-    connected && summary.status === 0 && !ended && amtOk && !overGoal && remaining > 0n && !busy && !needsUsdc;
+    connected && summary.status === 0 && !ended && amtOk && !overGoal && remaining > 0n && !busy && !lowBalance;
   const canRelease =
     connected && isCreator && releasable && ended && goalMet && nextIndex < milestones.length && !busy;
   const canRefund =
@@ -188,7 +173,7 @@ export default function CampaignDetail({ id }: { id: string }) {
         </div>
         <div className="mb-1 text-xl font-semibold">
           {stroopsToXlm(summary.raised)} / {stroopsToXlm(summary.goal)}{' '}
-          <span className="text-sm opacity-60">USDC</span>
+          <span className="text-sm opacity-60">XLM</span>
         </div>
         <div className="h-2.5 w-full overflow-hidden rounded-full bg-white/10">
           <div
@@ -233,7 +218,7 @@ export default function CampaignDetail({ id }: { id: string }) {
                 </span>
                 <div className="flex flex-1 items-center justify-between">
                   <span className="text-sm">Milestone {i + 1}</span>
-                  <span className="font-mono text-sm">{stroopsToXlm(m.amount)} USDC</span>
+                  <span className="font-mono text-sm">{stroopsToXlm(m.amount)} XLM</span>
                 </div>
                 {m.released && <span className="text-xs text-emerald-400">released</span>}
               </li>
@@ -244,20 +229,22 @@ export default function CampaignDetail({ id }: { id: string }) {
 
       {summary.status === 0 && !ended && (
         <div className="glass flex flex-col gap-2 rounded-xl border border-white/10 p-5">
-          <label className="text-sm font-medium">Support with USDC</label>
-          {connected && needsUsdc && (
+          <label className="text-sm font-medium">Support with XLM</label>
+          {connected && lowBalance && (
             <div className="flex flex-col gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm">
               <span>
-                You need test USDC before contributing. One tap funds your wallet, sets the USDC
-                trustline, and mints 500 test USDC.
+                {xlmBalance === null
+                  ? 'Your account isn’t funded yet. Send a little XLM to your wallet to activate it, then contribute.'
+                  : 'Your XLM balance is low. Keep enough XLM for your contribution plus the base reserve and fees.'}
               </span>
-              <button
-                onClick={handleGetUsdc}
-                disabled={busy}
-                className="w-fit rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+              <a
+                href="https://www.stellar.org/lumens/exchanges"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-fit rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5"
               >
-                {busy ? 'Working…' : 'Get Test USDC'}
-              </button>
+                Where to get XLM ↗
+              </a>
             </div>
           )}
           <div className="flex items-center gap-2">
@@ -278,15 +265,15 @@ export default function CampaignDetail({ id }: { id: string }) {
           </div>
           <div className="flex justify-between text-xs">
             <span className="opacity-60">
-              Remaining to goal: {stroopsToXlm(remaining > 0n ? remaining : 0n)} USDC
+              Remaining to goal: {stroopsToXlm(remaining > 0n ? remaining : 0n)} XLM
             </span>
-            {connected && !needsUsdc && usdcBalance !== null && (
-              <span className="opacity-60">Balance: {usdcBalance} USDC</span>
+            {connected && xlmBalance !== null && (
+              <span className="opacity-60">Balance: {xlmBalance.toFixed(2)} XLM</span>
             )}
           </div>
           {overGoal && (
             <span className="text-xs text-amber-400">
-              Amount exceeds what’s left to reach the goal ({stroopsToXlm(remaining)} USDC).
+              Amount exceeds what’s left to reach the goal ({stroopsToXlm(remaining)} XLM).
             </span>
           )}
           <button
@@ -315,7 +302,7 @@ export default function CampaignDetail({ id }: { id: string }) {
           disabled={!canRefund}
           className="rounded-lg border border-white/10 px-4 py-2 font-medium disabled:opacity-40"
         >
-          {busy ? 'Refunding…' : `Refund my ${stroopsToXlm(myContribution)} USDC`}
+          {busy ? 'Refunding…' : `Refund my ${stroopsToXlm(myContribution)} XLM`}
         </button>
       )}
 

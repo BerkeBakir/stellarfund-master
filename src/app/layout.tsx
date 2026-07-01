@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: "StellarFund — cross-border crowdfunding on Stellar",
   description:
-    "Fund anyone, anywhere. USDC milestone escrow on Stellar — refunds enforced by code, fiat on/off ramp via SEP-24.",
+    "Fund anyone, anywhere. XLM milestone escrow on Stellar mainnet — refunds enforced by code.",
   manifest: "/manifest.json",
   icons: { icon: "/icon.svg" },
 };

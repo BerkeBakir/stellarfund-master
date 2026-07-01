@@ -46,7 +46,7 @@ export default function ProofPage() {
           <div className="grid grid-cols-3 gap-3">
             <Stat label="Unique backers" value={String(data.uniqueBackers)} />
             <Stat label="Contributions" value={String(data.totalContributions)} />
-            <Stat label="Volume (USDC)" value={stroopsToXlm(data.totalVolume)} />
+            <Stat label="Volume (XLM)" value={stroopsToXlm(data.totalVolume)} />
           </div>
 
           {data.backers.length === 0 ? (
@@ -61,7 +61,7 @@ export default function ProofPage() {
                   <tr>
                     <th className="px-3 py-2">#</th>
                     <th className="px-3 py-2">Backer wallet</th>
-                    <th className="px-3 py-2">USDC</th>
+                    <th className="px-3 py-2">XLM</th>
                     <th className="px-3 py-2">Tx</th>
                   </tr>
                 </thead>

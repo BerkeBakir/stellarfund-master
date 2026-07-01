@@ -1,16 +1,29 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { openWalletModal, disconnect } from '@/lib/wallet';
-import { fundAccount } from '@/lib/friendbot';
-import { getTestUsdc } from '@/lib/onboard';
+import { getXlmBalance } from '@/lib/onboard';
 import { useAppStore } from '@/store';
 import { truncate } from '@/lib/format';
-import { explorerTxUrl } from '@/lib/config';
 
 export default function WalletBar() {
   const { publicKey, connected, setWallet } = useAppStore();
   const [busy, setBusy] = useState(false);
+  const [balance, setBalance] = useState<number | null>(null);
+
+  useEffect(() => {
+    if (!publicKey) {
+      setBalance(null);
+      return;
+    }
+    let active = true;
+    getXlmBalance(publicKey).then((b) => {
+      if (active) setBalance(b);
+    });
+    return () => {
+      active = false;
+    };
+  }, [publicKey]);
 
   async function connect() {
     setBusy(true);
@@ -31,34 +44,6 @@ export default function WalletBar() {
     }
     setWallet(null);
   }
-  async function fund() {
-    if (!publicKey) return;
-    setBusy(true);
-    try {
-      await fundAccount(publicKey);
-      toast.success('Funded with Test XLM.');
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Funding failed.');
-    } finally {
-      setBusy(false);
-    }
-  }
-  async function getUsdc() {
-    if (!publicKey) return;
-    setBusy(true);
-    const t = toast.loading('Funding account, setting USDC trustline, minting…');
-    try {
-      const hash = await getTestUsdc(publicKey);
-      toast.success('Got 500 Test USDC!', {
-        id: t,
-        description: 'Tx: ' + explorerTxUrl(hash),
-      });
-    } catch (e) {
-      toast.error(e instanceof Error ? e.message : 'Could not get test USDC.', { id: t });
-    } finally {
-      setBusy(false);
-    }
-  }
 
   if (!connected || !publicKey) {
     return (
@@ -76,22 +61,21 @@ export default function WalletBar() {
   }
   return (
     <div className="glass flex flex-wrap items-center justify-between gap-2 rounded-xl border border-white/10 p-3">
-      <span className="font-mono text-sm">{truncate(publicKey)}</span>
+      <div className="flex flex-col">
+        <span className="font-mono text-sm">{truncate(publicKey)}</span>
+        <span className="text-xs opacity-60">
+          {balance === null ? 'Account not funded yet' : `${balance.toFixed(2)} XLM`}
+        </span>
+      </div>
       <div className="flex flex-wrap gap-2">
-        <button
-          onClick={getUsdc}
-          disabled={busy}
-          className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-1.5 text-sm font-medium text-white disabled:opacity-50"
+        <a
+          href="https://www.stellar.org/lumens/exchanges"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-lg border border-white/10 px-3 py-1.5 text-sm hover:bg-white/5"
         >
-          {busy ? '…' : 'Get Test USDC'}
-        </button>
-        <button
-          onClick={fund}
-          disabled={busy}
-          className="rounded-lg border border-white/10 px-3 py-1.5 text-sm disabled:opacity-50"
-        >
-          {busy ? '…' : 'Get Test XLM'}
-        </button>
+          Get XLM ↗
+        </a>
         <button
           onClick={handleDisconnect}
           className="rounded-lg border border-white/10 px-3 py-1.5 text-sm"
