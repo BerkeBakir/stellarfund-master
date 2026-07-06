@@ -25,8 +25,9 @@ deliverables; `<…>` placeholders are filled in after the mainnet deploy.
 | Campaign wasm hash | `f42f7c5faae416b3a77695e9f9a8330cdad45901a1deebea894081ccf7f4f1a2` |
 
 ## Requirements checklist
-- [x] **Advanced feature** — Cross-border flows via SEP-24/SEP-10 anchor integration
-      (protocol demo); native-XLM escrow model. _(Fee Sponsorship optional follow-up.)_
+- [x] **Advanced feature — Fee Sponsorship (gasless)** — fee-bump paid by a sponsor
+      account (`/api/sponsor`) so users pay no network fee; auto-fallback to direct
+      submission. _(Also: SEP-10/SEP-24 cross-border anchor integration.)_
 - [x] Native XLM migration (no faucet), mainnet config, production build
 - [x] Security review document ([`docs/SECURITY.md`](SECURITY.md))
 - [x] Launch/marketing kit ([`docs/MARKETING.md`](MARKETING.md))

@@ -59,6 +59,26 @@ export async function invoke(
     .build();
   const prepared = await withRetry(() => server.prepareTransaction(built));
   const signedXdr = await signXdr(prepared.toXDR(), publicKey);
+
+  // Fee Sponsorship (gasless): try a fee-bump paid by the sponsor first. If the
+  // sponsor is configured, the server submits the fee-bump and returns the hash
+  // (the user pays no network fee). If it returns { sponsored: false }, fall
+  // through to a normal submission. On a sponsor error we throw (do NOT also
+  // submit directly — that would risk a double transaction).
+  const sponsorRes = await fetch('/api/sponsor', {
+    method: 'POST',
+    headers: { 'content-type': 'application/json' },
+    body: JSON.stringify({ xdr: signedXdr }),
+  });
+  const sponsorData = await sponsorRes.json().catch(() => ({}) as Record<string, unknown>);
+  if (sponsorRes.ok && sponsorData.sponsored && typeof sponsorData.hash === 'string') {
+    return sponsorData.hash;
+  }
+  if (!(sponsorRes.ok && sponsorData.sponsored === false)) {
+    throw new Error('Transaction could not be completed. Please try again.');
+  }
+
+  // Sponsor disabled — submit directly (user pays the fee).
   const signedTx = TransactionBuilder.fromXDR(signedXdr, NETWORK_PASSPHRASE);
   const sent = await withRetry(() => server.sendTransaction(signedTx));
   if (sent.status === 'ERROR') {

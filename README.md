@@ -73,12 +73,18 @@ Level 6 **mentor/team security review**.
 - **Private analytics** (`/stats`, key-gated) computed on-chain
 - **CI/CD** — contract tests + frontend lint/test/build
 
-## Advanced feature — cross-border flows
+## Advanced feature — Fee Sponsorship (gasless)
 
-StellarFund integrates the **SEP-10 + SEP-24** anchor protocol (interactive
-deposit/withdraw) as a cross-border on/off-ramp demonstration. On the mainnet build the
-`/ramp` page is gated (the reference `testanchor.stellar.org` is testnet-only); the core
-product custodies native XLM directly.
+Contributions and campaign creation are **gasless**: the user signs their transaction,
+and the server wraps it in a **fee-bump transaction** paid by a sponsor account
+([`/api/sponsor`](src/app/api/sponsor/route.ts)). The user pays **no network fee** — only
+the contribution amount itself — which removes a real onboarding barrier on mainnet. The
+contribute panel shows a "⚡ Gasless — network fee sponsored" badge, and the flow falls
+back to a normal (user-paid) submission automatically if no sponsor is configured.
+
+_Also implemented:_ **SEP-10 + SEP-24** cross-border anchor integration (interactive
+deposit/withdraw). On the mainnet build the `/ramp` page is gated because the reference
+`testanchor.stellar.org` is testnet-only; the core product custodies native XLM directly.
 
 ## Feedback-driven improvements
 

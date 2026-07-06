@@ -239,7 +239,12 @@ export default function CampaignDetail({ id }: { id: string }) {
 
       {summary.status === 0 && !ended && (
         <div className="glass flex flex-col gap-2 rounded-xl border border-white/10 p-5">
-          <label className="text-sm font-medium">Support with XLM</label>
+          <div className="flex items-center justify-between">
+            <label className="text-sm font-medium">Support with XLM</label>
+            <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs text-emerald-300">
+              ⚡ Gasless — network fee sponsored
+            </span>
+          </div>
           {connected && lowBalance && (
             <div className="flex flex-col gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm">
               <span>
