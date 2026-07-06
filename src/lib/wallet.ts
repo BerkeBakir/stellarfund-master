@@ -55,19 +55,61 @@ function ensureInit() {
   inited = true;
 }
 
+const SAVED_KEY = 'sf.wallet.address';
+
 export async function openWalletModal(): Promise<string> {
   ensureInit();
   const { address } = await StellarWalletsKit.authModal();
   if (!address) throw new Error('No wallet address returned.');
+  try {
+    localStorage.setItem(SAVED_KEY, address);
+  } catch {
+    /* ignore */
+  }
   return address;
 }
 
 export async function disconnect(): Promise<void> {
   try {
+    localStorage.removeItem(SAVED_KEY);
+  } catch {
+    /* ignore */
+  }
+  try {
     await StellarWalletsKit.disconnect();
   } catch {
     /* best effort */
   }
+}
+
+/**
+ * Restore a previous session after a full page load. Only runs if the user
+ * connected before (we saved the address), so it never prompts a fresh visitor.
+ * Falls back to the saved address so the UI reflects the connection even if the
+ * wallet is briefly unreachable; signing re-verifies through the wallet.
+ */
+export async function restoreConnection(): Promise<string | null> {
+  let saved: string | null = null;
+  try {
+    saved = localStorage.getItem(SAVED_KEY);
+  } catch {
+    /* ignore */
+  }
+  if (!saved) return null;
+  ensureInit();
+  try {
+    const { address } = await StellarWalletsKit.getAddress();
+    if (address) return address;
+  } catch {
+    /* kit memory empty after reload — try the wallet directly */
+  }
+  try {
+    const { address } = await StellarWalletsKit.fetchAddress();
+    if (address) return address;
+  } catch {
+    /* wallet not immediately reachable */
+  }
+  return saved;
 }
 
 export async function signXdr(xdr: string, publicKey: string): Promise<string> {

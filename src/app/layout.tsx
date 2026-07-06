@@ -4,6 +4,7 @@ import { Toaster } from "sonner";
 import { Analytics } from "@vercel/analytics/next";
 import { I18nProvider } from "@/i18n/I18nProvider";
 import FeedbackForm from "@/components/FeedbackForm";
+import WalletRestore from "@/components/WalletRestore";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -42,6 +43,7 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col">
         <I18nProvider>
+          <WalletRestore />
           {children}
           <FeedbackForm />
         </I18nProvider>
