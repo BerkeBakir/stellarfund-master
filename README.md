@@ -10,7 +10,7 @@ Built for the **Stellar Journey to Mastery — Black Belt (Level 6)**: taking th
 Factory → Escrow → Reputation engine into a production product custodying real value.
 
 🔗 **Live app (mainnet):** https://stellarfund-black.vercel.app
-🎬 **Demo video:** `<video-link>`
+🎬 **Demo video:** https://youtu.be/Jo3XGBu4Q5o
 🧾 **Proof of users:** https://stellarfund-black.vercel.app/proof (on-chain backer evidence)
 🔒 **Security review:** [`docs/SECURITY.md`](docs/SECURITY.md)
 📖 **User guide:** [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md)

@@ -6,7 +6,7 @@ deliverables; `<…>` placeholders are filled in after the mainnet deploy.
 ## Links
 - **Public GitHub repo:** https://github.com/BerkeBakir/stellarfund-black
 - **Live mainnet app:** https://stellarfund-black.vercel.app
-- **Demo video:** `<video-link>`
+- **Demo video:** https://youtu.be/Jo3XGBu4Q5o
 - **Twitter/X launch post:** `<tweet-link>` (see `docs/MARKETING.md`)
 - **Technical blog (ecosystem contribution):** `<blog-link>` (draft in `docs/blog/`)
 - **Security review:** [`docs/SECURITY.md`](SECURITY.md) → mentor/team review: `<status>`
