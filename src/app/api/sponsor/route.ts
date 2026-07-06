@@ -43,10 +43,10 @@ export async function POST(req: Request) {
 
     const sent = await server.sendTransaction(feeBump);
     if (sent.status === 'ERROR') {
-      return NextResponse.json(
-        { error: 'Sponsored submission failed', detail: sent.errorResult?.toXDR('base64') },
-        { status: 502 },
-      );
+      // The fee-bump was rejected before applying (e.g. the sponsor is out of
+      // XLM). Nothing landed on-chain, so signal a fallback to direct
+      // submission — the user pays the fee, but the contribution still works.
+      return NextResponse.json({ sponsored: false, reason: 'sponsor_unavailable' });
     }
 
     let got = await server.getTransaction(sent.hash);
