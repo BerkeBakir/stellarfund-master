@@ -7,6 +7,7 @@
 set -euo pipefail
 export PATH="$HOME/.cargo/bin:$PATH"
 NET=mainnet
+FEE=10000000  # 1 XLM cap; mainnet needs a higher fee than the CLI default
 SRC=stellarfund-mainnet
 TOKEN=$(stellar contract id asset --asset native --network $NET)  # native XLM SAC
 
@@ -19,23 +20,23 @@ echo "Building contracts..."
 ( cd contracts/factory && stellar contract build >/dev/null )
 
 echo "Uploading campaign wasm..."
-CAMPAIGN_HASH=$(stellar contract upload --wasm contracts/campaign/target/wasm32v1-none/release/campaign.wasm --source $SRC --network $NET)
+CAMPAIGN_HASH=$(stellar contract upload --wasm contracts/campaign/target/wasm32v1-none/release/campaign.wasm --source $SRC --network $NET --fee $FEE)
 
 echo "Deploying reputation..."
 sleep 4
-REP_ID=$(stellar contract deploy --wasm contracts/reputation/target/wasm32v1-none/release/reputation.wasm --source $SRC --network $NET)
+REP_ID=$(stellar contract deploy --wasm contracts/reputation/target/wasm32v1-none/release/reputation.wasm --source $SRC --network $NET --fee $FEE)
 
 echo "Deploying factory..."
 sleep 4
-FACTORY_ID=$(stellar contract deploy --wasm contracts/factory/target/wasm32v1-none/release/factory.wasm --source $SRC --network $NET)
+FACTORY_ID=$(stellar contract deploy --wasm contracts/factory/target/wasm32v1-none/release/factory.wasm --source $SRC --network $NET --fee $FEE)
 
 sleep 4
 echo "Init factory..."
-stellar contract invoke --id $FACTORY_ID --source $SRC --network $NET -- init --campaign_wasm_hash $CAMPAIGN_HASH --token $TOKEN --reputation $REP_ID >/dev/null
+stellar contract invoke --id $FACTORY_ID --source $SRC --network $NET --fee $FEE -- init --campaign_wasm_hash $CAMPAIGN_HASH --token $TOKEN --reputation $REP_ID >/dev/null
 
 sleep 4
 echo "Init reputation..."
-stellar contract invoke --id $REP_ID --source $SRC --network $NET -- init --factory $FACTORY_ID >/dev/null
+stellar contract invoke --id $REP_ID --source $SRC --network $NET --fee $FEE -- init --factory $FACTORY_ID >/dev/null
 
 echo
 echo "=== MAINNET DEPLOY COMPLETE — set these as Vercel env vars ==="
