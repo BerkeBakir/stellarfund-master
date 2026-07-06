@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 320" width="800" height="320">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0f766e"/>
+      <stop offset="0.6" stop-color="#0d9488"/>
+      <stop offset="1" stop-color="#db2777"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="320" fill="url(#bg)"/>
+  <circle cx="660" cy="90" r="120" fill="#ffffff" opacity="0.06"/>
+  <!-- medical cross in rounded square -->
+  <g transform="translate(400 160)">
+    <rect x="-70" y="-70" width="140" height="140" rx="28" fill="#ffffff" opacity="0.95"/>
+    <rect x="-16" y="-46" width="32" height="92" rx="8" fill="#0d9488"/>
+    <rect x="-46" y="-16" width="92" height="32" rx="8" fill="#0d9488"/>
+  </g>
+  <!-- heartbeat line -->
+  <polyline points="90,250 200,250 240,210 280,290 330,240 800,240" fill="none" stroke="#fbcfe8" stroke-width="5" opacity="0.8"/>
+</svg>

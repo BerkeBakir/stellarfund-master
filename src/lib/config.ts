@@ -1,5 +1,8 @@
 export const NETWORK_PASSPHRASE = 'Public Global Stellar Network ; September 2015';
-export const RPC_URL = 'https://mainnet.sorobanrpc.com';
+// gateway.fm's public mainnet Soroban RPC — it doesn't aggressively rate-limit
+// browser bursts the way mainnet.sorobanrpc.com (Cloudflare 1015) does, which
+// was causing "Loading campaign…" hangs, proof "failed to fetch", and flicker.
+export const RPC_URL = 'https://soroban-rpc.mainnet.stellar.gateway.fm';
 export const HORIZON_URL = 'https://horizon.stellar.org';
 export const EXPLORER_BASE_URL = 'https://stellar.expert/explorer/public';
 
