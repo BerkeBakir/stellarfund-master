@@ -1,143 +1,111 @@
 1
-00:00:00,500 --> 00:00:05,000
-StellarFund — cross-border crowdfunding on Stellar, with USDC milestone escrow.
+00:00:00,300 --> 00:00:04,000
+StellarFund — cross-border crowdfunding, live on Stellar mainnet.
 
 2
-00:00:05,000 --> 00:00:10,000
-First, connect a Stellar wallet — Freighter, Albedo, xBull, Lobstr and more.
+00:00:04,000 --> 00:00:08,000
+First, connect a Stellar wallet — this is real XLM on mainnet.
 
 3
-00:00:10,000 --> 00:00:15,000
-One click links your wallet to the app on Stellar Testnet.
+00:00:08,000 --> 00:00:14,000
+Open a campaign to see its milestone timeline and progress.
 
 4
-00:00:15,000 --> 00:00:21,000
-New here? Tap "Get Test USDC" for one-tap onboarding.
+00:00:14,000 --> 00:00:20,000
+Contribute real XLM — held in a smart-contract escrow, not by a middleman.
 
 5
-00:00:21,000 --> 00:00:27,000
-It funds the account, adds the USDC trustline, and mints 500 test USDC.
+00:00:20,000 --> 00:00:26,000
+Approve the transaction; funds release only as milestones are met.
 
 6
-00:00:27,000 --> 00:00:33,000
-No faucets to hunt for — you're ready to back a campaign in seconds.
+00:00:26,000 --> 00:00:32,000
+The contribution is confirmed on-chain in seconds.
 
 7
-00:00:33,000 --> 00:00:39,000
-Browse live campaigns across categories — Education, Health, Technology and more.
+00:00:32,000 --> 00:00:36,000
+Every transaction is public and verifiable on stellar.expert.
 
 8
-00:00:39,000 --> 00:00:45,000
-Search and category filters make it easy to find a cause to support.
+00:00:36,000 --> 00:00:41,000
+Browse campaigns across categories — Education, Health, Technology and more.
 
 9
-00:00:45,000 --> 00:00:51,000
-Each campaign shows its goal, its progress, and its milestone schedule.
+00:00:41,000 --> 00:00:46,000
+Search and filters make it easy to find a cause to support.
 
 10
-00:00:51,000 --> 00:00:57,000
-Open a campaign to see the milestone timeline and how funds are released.
+00:00:46,000 --> 00:00:52,000
+Now let's create a brand-new campaign, live on mainnet.
 
 11
-00:00:57,000 --> 00:01:03,000
-Contribute USDC — the amount is capped at the remaining goal.
+00:00:52,000 --> 00:00:59,000
+Give it an identity: title, description, category and a cover image.
 
 12
-00:01:03,000 --> 00:01:09,000
-Funds are held in a smart-contract escrow, not by any middleman.
+00:00:59,000 --> 00:01:06,000
+Set the funding goal in XLM.
 
 13
-00:01:09,000 --> 00:01:15,000
-Now let's create a brand-new campaign, live.
+00:01:06,000 --> 00:01:14,000
+Define the milestones — each releases one tranche of funds as it's met.
 
 14
-00:01:15,000 --> 00:01:22,000
-Give it an identity: title, description, category, cover image and creator name.
+00:01:14,000 --> 00:01:22,000
+The milestones must sum to the goal; this is enforced on-chain.
 
 15
-00:01:22,000 --> 00:01:29,000
-Set the funding goal in USDC.
+00:01:22,000 --> 00:01:30,000
+Submitting deploys a dedicated escrow contract through the Factory.
 
 16
-00:01:29,000 --> 00:01:37,000
-Then define the milestones — each releases a tranche of funds as it's met.
+00:01:30,000 --> 00:01:37,000
+Sign the transaction in your wallet to confirm.
 
 17
 00:01:37,000 --> 00:01:45,000
-The milestones must sum to the goal; this is enforced on-chain.
+In seconds, the new campaign is live on-chain.
 
 18
-00:01:45,000 --> 00:01:53,000
-Submitting deploys a dedicated escrow contract through the Factory.
+00:01:45,000 --> 00:01:50,000
+Here's the campaign we just created, now live on the home page.
 
 19
-00:01:53,000 --> 00:02:02,000
-The Factory creates and registers the campaign contract on Stellar Testnet.
+00:01:50,000 --> 00:01:55,000
+The Proof of Users board reads real backers straight from the blockchain.
 
 20
-00:02:02,000 --> 00:02:11,000
-Sign the transaction in your wallet to confirm.
+00:01:55,000 --> 00:02:00,000
+Every wallet and amount is verifiable on stellar.expert — no fake numbers.
 
 21
-00:02:11,000 --> 00:02:20,000
-In a few seconds, the campaign is live on-chain.
+00:02:00,000 --> 00:02:08,000
+We collect user details and feedback through a short form.
 
 22
-00:02:20,000 --> 00:02:24,000
-No server holds the money — the contract does.
+00:02:08,000 --> 00:02:18,000
+Name, email and wallet address — so each response is verifiable on-chain.
 
 23
-00:02:24,000 --> 00:02:31,000
-Here's the campaign we just created, now appearing in the list.
+00:02:18,000 --> 00:02:28,000
+Users rate the experience and how easy it was to contribute.
 
 24
-00:02:31,000 --> 00:02:38,000
-Its contract address is real and verifiable on stellar.expert.
+00:02:28,000 --> 00:02:38,000
+They tell us what they did: connect, contribute, or create a campaign.
 
 25
-00:02:38,000 --> 00:02:41,000
-Proof that creation actually hit the chain.
+00:02:38,000 --> 00:02:50,000
+And what they liked most, plus what we should build next.
 
 26
-00:02:41,000 --> 00:02:47,000
-We collect user feedback through a simple Google Form.
+00:02:50,000 --> 00:03:02,000
+This feedback drives the roadmap — TTL hardening, fee sponsorship, profiles.
 
 27
-00:02:47,000 --> 00:02:53,000
-The Feedback button is always one click away.
+00:03:02,000 --> 00:03:14,000
+Real users, real transactions, real feedback — all on Stellar mainnet.
 
 28
-00:02:53,000 --> 00:02:59,000
-Real feedback drives what we build next.
-
-29
-00:02:59,000 --> 00:03:05,000
-The Proof of Users board reads straight from the blockchain.
-
-30
-00:03:05,000 --> 00:03:11,000
-It lists every unique backer wallet, with amounts and transaction links.
-
-31
-00:03:11,000 --> 00:03:17,000
-Transparent, on-chain evidence — no numbers we could fake.
-
-32
-00:03:17,000 --> 00:03:23,000
-Finally, the fiat on/off ramp powered by a SEP-24 anchor.
-
-33
-00:03:23,000 --> 00:03:30,000
-Pay fiat to receive USDC, or cash out USDC back to fiat.
-
-34
-00:03:30,000 --> 00:03:37,000
-SEP-10 auth and the SEP-24 interactive flow run against the test anchor.
-
-35
-00:03:37,000 --> 00:03:39,000
-Bridging traditional money and Stellar.
-
-36
-00:03:39,000 --> 00:03:44,000
-StellarFund — global funding, milestone-enforced, on Stellar. Thanks for watching!
+00:03:14,000 --> 00:03:22,000
+StellarFund — global funding, milestone-enforced. Thanks for watching!
