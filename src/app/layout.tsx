@@ -8,6 +8,7 @@ import WalletRestore from "@/components/WalletRestore";
 import PageTracker from "@/components/PageTracker";
 import SiteFooter from "@/components/SiteFooter";
 import OnboardingTour from "@/components/OnboardingTour";
+import PWARegister from "@/components/PWARegister";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -62,6 +63,7 @@ export default function RootLayout({
         <I18nProvider>
           <WalletRestore />
           <PageTracker />
+          <PWARegister />
           {children}
           <SiteFooter />
           <OnboardingTour />

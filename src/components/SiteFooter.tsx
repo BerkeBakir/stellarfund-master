@@ -4,11 +4,13 @@ import Link from 'next/link';
 // every route.
 export default function SiteFooter() {
   const links: [string, string][] = [
+    ['/me', 'My StellarFund'],
+    ['/creator', 'Creator'],
     ['/proof', 'Proof'],
     ['/metrics', 'Metrics'],
     ['/growth', 'Growth report'],
     ['/changelog', 'Changelog'],
-    ['/stats', 'Analytics'],
+    ['/try', 'Try free'],
   ];
   return (
     <footer className="mt-auto border-t border-white/10 px-4 py-6 text-xs opacity-70">
