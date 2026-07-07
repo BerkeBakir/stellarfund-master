@@ -4,6 +4,8 @@ import CampaignDetail from '@/components/CampaignDetail';
 import CampaignUpdates from '@/components/CampaignUpdates';
 import ShareBar from '@/components/ShareBar';
 import FollowButton from '@/components/FollowButton';
+import TransparencyBadges from '@/components/TransparencyBadges';
+import Comments from '@/components/Comments';
 import WalletBar from '@/components/WalletBar';
 import { STATIC_META } from '@/lib/metadata';
 
@@ -36,11 +38,13 @@ export default async function CampaignPage({ params }: { params: Promise<{ id: s
       <h1 className="text-xl font-bold break-all">Campaign</h1>
       <WalletBar />
       <CampaignDetail id={id} />
+      <TransparencyBadges address={id} />
       <div className="flex items-center justify-between gap-2">
         <ShareBar path={`/campaign/${id}`} text="Back this campaign on StellarFund" />
         <FollowButton address={id} />
       </div>
       <CampaignUpdates id={id} />
+      <Comments id={id} />
     </main>
   );
 }

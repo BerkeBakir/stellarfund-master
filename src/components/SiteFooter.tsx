@@ -10,6 +10,7 @@ export default function SiteFooter() {
     ['/metrics', 'Metrics'],
     ['/growth', 'Growth report'],
     ['/changelog', 'Changelog'],
+    ['/testimonials', 'Reviews'],
     ['/try', 'Try free'],
   ];
   return (
