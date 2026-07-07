@@ -8,6 +8,7 @@ import Hero from '@/components/Hero';
 import LiveStats from '@/components/LiveStats';
 import LanguageSwitcher from '@/components/LanguageSwitcher';
 import FirstRunHint from '@/components/FirstRunHint';
+import Subscribe from '@/components/Subscribe';
 import { useAppStore } from '@/store';
 import { getSummary, type Summary } from '@/lib/campaign';
 import { FEEDBACK_FORM_URL, HIDDEN_CAMPAIGNS, ANCHOR_ENABLED } from '@/lib/config';
@@ -90,6 +91,9 @@ export default function Home() {
           <Link href="/proof" className="text-indigo-300 underline">
             {t('nav.proof')} →
           </Link>
+          <Link href="/creator" className="text-indigo-300 underline">
+            Creator →
+          </Link>
           <a
             href={FEEDBACK_FORM_URL}
             target="_blank"
@@ -107,6 +111,7 @@ export default function Home() {
       <PollProvider />
       <LiveStats summaries={summaries} backers={backers} />
       <WalletBar />
+      <Subscribe />
 
       <div id="campaigns" className="flex items-center justify-between">
         <h2 className="font-semibold">{t('home.campaigns')}</h2>

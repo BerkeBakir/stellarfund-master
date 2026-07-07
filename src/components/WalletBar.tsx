@@ -5,6 +5,7 @@ import { openWalletModal, disconnect } from '@/lib/wallet';
 import { getXlmBalance } from '@/lib/onboard';
 import { useAppStore } from '@/store';
 import { truncate } from '@/lib/format';
+import { track } from '@/lib/track';
 
 export default function WalletBar() {
   const { publicKey, connected, setWallet } = useAppStore();
@@ -28,7 +29,9 @@ export default function WalletBar() {
   async function connect() {
     setBusy(true);
     try {
-      setWallet(await openWalletModal());
+      const pk = await openWalletModal();
+      setWallet(pk);
+      track('connect', { wallet: pk ?? undefined });
       toast.success('Wallet connected.');
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to connect.');

@@ -7,6 +7,7 @@ import FeedbackForm from "@/components/FeedbackForm";
 import WalletRestore from "@/components/WalletRestore";
 import PageTracker from "@/components/PageTracker";
 import SiteFooter from "@/components/SiteFooter";
+import OnboardingTour from "@/components/OnboardingTour";
 import "./globals.css";
 
 const geistSans = Geist({
@@ -63,6 +64,7 @@ export default function RootLayout({
           <PageTracker />
           {children}
           <SiteFooter />
+          <OnboardingTour />
           <FeedbackForm />
         </I18nProvider>
         <Toaster theme="dark" position="bottom-right" />

@@ -19,6 +19,7 @@ import { stroopsToXlm, xlmToStroops, pct, timeLeft, truncate } from '@/lib/forma
 import { explorerContractUrl } from '@/lib/config';
 import TxStatus from './TxStatus';
 import ReputationBadge from './ReputationBadge';
+import { track } from '@/lib/track';
 
 export default function CampaignDetail({ id }: { id: string }) {
   const { connected, publicKey, events, setTxStatus, setTxResult } = useAppStore();
@@ -292,7 +293,10 @@ export default function CampaignDetail({ id }: { id: string }) {
             </span>
           )}
           <button
-            onClick={() => run(() => contribute(publicKey!, id, xlmToStroops(amount)), 'Contribution')}
+            onClick={() => {
+            track('contribute_intent', { campaign: id, wallet: publicKey ?? undefined });
+            run(() => contribute(publicKey!, id, xlmToStroops(amount)), 'Contribution');
+          }}
             disabled={!canContribute}
             className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-4 py-2 font-medium text-white disabled:opacity-40"
           >
