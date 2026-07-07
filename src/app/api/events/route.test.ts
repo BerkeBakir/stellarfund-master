@@ -1,6 +1,6 @@
 import { describe, it, expect, vi, beforeEach } from 'vitest';
 
-const put = vi.fn(async () => ({ url: 'https://blob/x.json' }));
+const { put } = vi.hoisted(() => ({ put: vi.fn(async () => ({ url: 'https://blob/x.json' })) }));
 vi.mock('@vercel/blob', () => ({ put }));
 
 import { POST } from './route';
