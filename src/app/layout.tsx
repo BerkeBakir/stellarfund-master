@@ -19,11 +19,25 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://stellarfund-master.vercel.app"),
   title: "StellarFund — cross-border crowdfunding on Stellar",
   description:
     "Fund anyone, anywhere. XLM milestone escrow on Stellar mainnet — refunds enforced by code.",
   manifest: "/manifest.json",
   icons: { icon: "/icon.svg" },
+  openGraph: {
+    title: "StellarFund",
+    description:
+      "Milestone-escrow crowdfunding on Stellar. Gasless, transparent, on-chain.",
+    url: "https://stellarfund-master.vercel.app",
+    siteName: "StellarFund",
+    type: "website",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "StellarFund",
+    description: "Milestone-escrow crowdfunding on Stellar.",
+  },
 };
 
 export const viewport: Viewport = {
