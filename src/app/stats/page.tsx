@@ -20,6 +20,10 @@ function Dashboard() {
 
   const [rows, setRows] = useState<Row[]>([]);
   const [proof, setProof] = useState({ uniqueBackers: 0, totalContributions: 0, totalVolume: 0n });
+  const [analytics, setAnalytics] = useState<{
+    funnel: { visits: number; connects: number; contributeIntents: number; shares: number };
+    cohorts: { week: string; wallets: number }[];
+  } | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -53,6 +57,12 @@ function Dashboard() {
         if (!active) return;
         setRows(summaries.filter((r): r is Row => r !== null));
         setProof({ uniqueBackers: p.uniqueBackers, totalContributions: p.totalContributions, totalVolume: p.totalVolume });
+        try {
+          const res = await fetch('/api/analytics');
+          if (res.ok) setAnalytics(await res.json());
+        } catch {
+          /* analytics optional */
+        }
       } finally {
         if (active) setLoading(false);
       }
@@ -135,6 +145,43 @@ function Dashboard() {
           ))}
         </div>
       </div>
+
+      {analytics && (
+        <div className="glass rounded-xl border border-white/10 p-5">
+          <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">
+            Acquisition funnel
+          </h3>
+          <div className="flex flex-col gap-2 text-sm">
+            {([
+              ['Visits', analytics.funnel.visits],
+              ['Connects', analytics.funnel.connects],
+              ['Contribute intents', analytics.funnel.contributeIntents],
+              ['Shares', analytics.funnel.shares],
+            ] as const).map(([label, n]) => {
+              const max = Math.max(1, analytics.funnel.visits);
+              return (
+                <div key={label} className="flex items-center gap-3">
+                  <span className="w-32 shrink-0 opacity-80">{label}</span>
+                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-white/10">
+                    <div className="h-full bg-gradient-to-r from-indigo-400 to-fuchsia-500" style={{ width: `${(n / max) * 100}%` }} />
+                  </div>
+                  <span className="w-10 text-right opacity-70">{n}</span>
+                </div>
+              );
+            })}
+          </div>
+          {analytics.cohorts.length > 0 && (
+            <div className="mt-4">
+              <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide opacity-60">Weekly active wallets</h4>
+              <div className="flex flex-wrap gap-2 text-xs opacity-80">
+                {analytics.cohorts.map((c) => (
+                  <span key={c.week} className="rounded-full bg-white/10 px-2 py-0.5">{c.week}: {c.wallets}</span>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+      )}
 
       <div className="glass rounded-xl border border-white/10 p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">
