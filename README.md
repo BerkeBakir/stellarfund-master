@@ -1,18 +1,34 @@
-# StellarFund ⚫
+# StellarFund 🏆
 
 > Cross-border crowdfunding on **Stellar mainnet** — backers fund creators anywhere in
 > **XLM**, money is held in a **milestone-escrow** smart contract that releases funds
 > tranche-by-tranche as milestones are met, and **refunds are enforced by code** if the
 > goal is missed.
 
-Built for the **Stellar Journey to Mastery — Black Belt (Level 6)**: taking the MVP to
-**mainnet** with real users, a security review, and a public launch. Evolves the
-Factory → Escrow → Reputation engine into a production product custodying real value.
+Built for the **Stellar Journey to Mastery — Founder Belt (Level 7 / Master Track)**:
+turning the mainnet product into a startup — sustainable growth, retention, product-market
+fit, and real adoption. Builds on the L6 Black Belt mainnet app (same Factory → Escrow →
+Reputation engine, same mainnet contracts).
 
-🔗 **Live app (mainnet):** https://stellarfund-black.vercel.app
-🎬 **Demo video:** https://youtu.be/Jo3XGBu4Q5o
-🧾 **Proof of users:** https://stellarfund-black.vercel.app/proof (on-chain backer evidence)
+🔗 **Live app (mainnet):** https://stellarfund-master.vercel.app
+📈 **Growth report:** https://stellarfund-master.vercel.app/growth · [`docs/GROWTH-REPORT.md`](docs/GROWTH-REPORT.md)
+📊 **Build-in-public metrics:** https://stellarfund-master.vercel.app/metrics
+🗒️ **Changelog:** https://stellarfund-master.vercel.app/changelog
+🧾 **Proof of users:** https://stellarfund-master.vercel.app/proof (on-chain backer evidence)
+📝 **L7 submission:** [`docs/SUBMISSION-L7.md`](docs/SUBMISSION-L7.md)
 🔒 **Security review:** [`docs/SECURITY.md`](docs/SECURITY.md)
+
+## Founder-track features (L7)
+
+- **Growth & analytics:** first-party privacy-light funnel + weekly cohorts (`/stats`, `/metrics`), monthly growth report (`/growth`), SEO + dynamic social cards.
+- **Acquisition:** creator dashboard (`/creator`), referral share links (`?ref=`), embeddable widget (`/embed/<id>`), testnet free-try funnel (`/try`), email capture + weekly digest.
+- **Retention:** personal dashboard (`/me`), follow/watch campaigns, campaign updates, onboarding tour, installable PWA.
+- **Trust / PMF:** comments, transparency badges, creator verification, testimonial wall, on-chain reputation.
+
+## Feedback-driven improvements
+
+_Real user feedback (Google Form → [`docs/feedback/`](docs/feedback/)) and the shipped fixes
+it drove will be linked here as commits during the month._
 📖 **User guide:** [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md)
 📣 **Launch thread:** https://x.com/Berkebey001
 📝 **Technical blog:** https://dev.to/berkebey01/building-milestone-escrow-crowdfunding-on-soroban-5hc
