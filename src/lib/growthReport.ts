@@ -40,7 +40,9 @@ export const SOCIAL: SocialMetrics = {
     ],
   },
   socialProofUrls: [
-    // e.g. 'https://x.com/Berkebey001/status/…'
+    'https://youtu.be/tGgUhUwJw2A', // L7 demo video
+    'https://x.com/Berkebey001', // launch + product-update posts
+    'https://dev.to/berkebey01/building-milestone-escrow-crowdfunding-on-soroban-5hc', // technical blog (community contribution)
   ],
 };
 
