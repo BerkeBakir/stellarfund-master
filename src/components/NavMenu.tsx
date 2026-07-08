@@ -1,24 +1,27 @@
 'use client';
 import { useState } from 'react';
 import Link from 'next/link';
+import { useI18n } from '@/i18n/I18nProvider';
+import type { MessageKey } from '@/i18n/messages';
 
 // Global slide-in navigation. A fixed hamburger button (top-right) opens a panel
 // with every product surface so the L7 features are always one tap away.
-const LINKS: [string, string, string][] = [
-  ['/', '🏠', 'Home'],
-  ['/me', '👤', 'My StellarFund'],
-  ['/creator', '🧑‍🚀', 'Creator dashboard'],
-  ['/create', '➕', 'New campaign'],
-  ['/proof', '🧾', 'Proof of users'],
-  ['/metrics', '📊', 'Live metrics'],
-  ['/growth', '📈', 'Growth report'],
-  ['/changelog', '🗒️', 'Changelog'],
-  ['/testimonials', '💬', 'Reviews'],
-  ['/try', '🧪', 'Try free (testnet)'],
+const LINKS: [string, string, MessageKey][] = [
+  ['/', '🏠', 'menu.home'],
+  ['/me', '👤', 'menu.me'],
+  ['/creator', '🧑‍🚀', 'menu.creator'],
+  ['/create', '➕', 'menu.create'],
+  ['/proof', '🧾', 'menu.proof'],
+  ['/metrics', '📊', 'menu.metrics'],
+  ['/growth', '📈', 'menu.growth'],
+  ['/changelog', '🗒️', 'menu.changelog'],
+  ['/testimonials', '💬', 'menu.reviews'],
+  ['/try', '🧪', 'menu.try'],
 ];
 
 export default function NavMenu() {
   const [open, setOpen] = useState(false);
+  const { t } = useI18n();
 
   return (
     <>
@@ -53,7 +56,7 @@ export default function NavMenu() {
                 className="flex items-center gap-3 rounded-lg px-3 py-2 text-sm hover:bg-white/10"
               >
                 <span className="w-5 text-center">{icon}</span>
-                <span>{label}</span>
+                <span>{t(label)}</span>
               </Link>
             ))}
             <a
@@ -63,7 +66,7 @@ export default function NavMenu() {
               className="mt-2 flex items-center gap-3 rounded-lg px-3 py-2 text-sm opacity-70 hover:bg-white/10"
             >
               <span className="w-5 text-center">⭐</span>
-              <span>GitHub</span>
+              <span>{t('menu.github')}</span>
             </a>
           </nav>
         </div>

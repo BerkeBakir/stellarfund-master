@@ -4,9 +4,11 @@ import Link from 'next/link';
 import { getProofData } from '@/lib/proof';
 import { stroopsToXlm } from '@/lib/format';
 import { SOCIAL, followerGrowth } from '@/lib/growthReport';
+import { useI18n } from '@/i18n/I18nProvider';
 import type { Funnel } from '@/lib/retention';
 
 export default function GrowthPage() {
+  const { t } = useI18n();
   const [proof, setProof] = useState({ uniqueBackers: 0, totalContributions: 0, totalVolume: 0n });
   const [funnel, setFunnel] = useState<Funnel | null>(null);
   const [newWeek, setNewWeek] = useState(0);
@@ -25,8 +27,8 @@ export default function GrowthPage() {
   return (
     <main className="mx-auto flex max-w-3xl flex-col gap-6 p-4 sm:p-6">
       <header className="flex flex-col gap-1">
-        <Link href="/" className="text-xs text-indigo-300 underline">← back</Link>
-        <h1 className="text-2xl font-bold text-gradient">Monthly growth report</h1>
+        <Link href="/" className="text-xs text-indigo-300 underline">{t('back')}</Link>
+        <h1 className="text-2xl font-bold text-gradient">{t('growth.title')}</h1>
         <p className="text-sm opacity-70">
           Period: {SOCIAL.periodStart} → {SOCIAL.periodEnd}. On-chain figures are live &amp;
           verifiable; social/community figures are self-reported.
@@ -34,7 +36,7 @@ export default function GrowthPage() {
       </header>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">On-chain adoption (verifiable)</h2>
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">{t('growth.onchainSection')}</h2>
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-3">
           <li className="glass rounded-xl border border-white/10 p-4 text-center"><div className="text-xl font-bold text-gradient">{proof.uniqueBackers}</div><div className="text-xs opacity-60">Unique backers</div></li>
           <li className="glass rounded-xl border border-white/10 p-4 text-center"><div className="text-xl font-bold text-gradient">{proof.totalContributions}</div><div className="text-xs opacity-60">Contributions</div></li>
@@ -46,7 +48,7 @@ export default function GrowthPage() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">Community &amp; social (self-reported)</h2>
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">{t('growth.socialSection')}</h2>
         <ul className="grid grid-cols-2 gap-3 sm:grid-cols-4">
           <li className="glass rounded-xl border border-white/10 p-4 text-center"><div className="text-xl font-bold">{SOCIAL.followers}</div><div className="text-xs opacity-60">Followers</div></li>
           <li className="glass rounded-xl border border-white/10 p-4 text-center"><div className="text-xl font-bold">+{followerGrowth()}</div><div className="text-xs opacity-60">Gained</div></li>
@@ -56,7 +58,7 @@ export default function GrowthPage() {
       </section>
 
       <section>
-        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">Highlights</h2>
+        <h2 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">{t('growth.highlights')}</h2>
         <ul className="flex list-disc flex-col gap-1 pl-5 text-sm opacity-90">
           {SOCIAL.highlights.map((h) => <li key={h}>{h}</li>)}
         </ul>

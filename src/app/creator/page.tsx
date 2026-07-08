@@ -11,10 +11,12 @@ import { getAllMetadata, type CampaignMeta } from '@/lib/metadata';
 import { getUpdates, postUpdate, type CampaignUpdate } from '@/lib/updates';
 import { HIDDEN_CAMPAIGNS } from '@/lib/config';
 import { stroopsToXlm } from '@/lib/format';
+import { useI18n } from '@/i18n/I18nProvider';
 
 type Mine = { address: string; raised: bigint; goal: bigint; meta?: CampaignMeta };
 
 export default function CreatorPage() {
+  const { t } = useI18n();
   const publicKey = useAppStore((s) => s.publicKey);
   const [mine, setMine] = useState<Mine[]>([]);
   const [loading, setLoading] = useState(false);
@@ -70,18 +72,18 @@ export default function CreatorPage() {
   return (
     <main className="mx-auto flex max-w-3xl flex-col gap-5 p-4 sm:p-6">
       <header className="flex flex-col gap-1">
-        <Link href="/" className="text-xs text-indigo-300 underline">← back</Link>
-        <h1 className="text-2xl font-bold text-gradient">Creator dashboard</h1>
-        <p className="text-sm opacity-70">Manage your campaigns, post updates, and share to grow your backers.</p>
+        <Link href="/" className="text-xs text-indigo-300 underline">{t('back')}</Link>
+        <h1 className="text-2xl font-bold text-gradient">{t('creator.title')}</h1>
+        <p className="text-sm opacity-70">{t('creator.subtitle')}</p>
       </header>
 
       <WalletBar />
 
-      {!publicKey && <p className="text-sm opacity-60">Connect your wallet to see the campaigns you created.</p>}
-      {publicKey && loading && <p className="text-sm opacity-60">Loading your campaigns…</p>}
+      {!publicKey && <p className="text-sm opacity-60">{t('creator.connect')}</p>}
+      {publicKey && loading && <p className="text-sm opacity-60">{t('creator.loading')}</p>}
       {publicKey && !loading && mine.length === 0 && (
         <p className="text-sm opacity-60">
-          No campaigns found for this wallet. <Link href="/create" className="text-indigo-300 underline">Create one →</Link>
+          {t('creator.none')} <Link href="/create" className="text-indigo-300 underline">{t('me.createOne')}</Link>
         </p>
       )}
 
@@ -98,17 +100,17 @@ export default function CreatorPage() {
             </div>
 
             <div className="flex gap-2">
-              <button onClick={() => loadUpdates(c.address)} className="rounded-lg border border-white/10 px-2 py-1 text-sm hover:bg-white/10">Load updates</button>
-              <button onClick={() => setDraft({ addr: c.address, title: '', body: '' })} className="rounded-lg border border-white/10 px-2 py-1 text-sm hover:bg-white/10">Post update</button>
+              <button onClick={() => loadUpdates(c.address)} className="rounded-lg border border-white/10 px-2 py-1 text-sm hover:bg-white/10">{t('creator.loadUpdates')}</button>
+              <button onClick={() => setDraft({ addr: c.address, title: '', body: '' })} className="rounded-lg border border-white/10 px-2 py-1 text-sm hover:bg-white/10">{t('creator.postUpdate')}</button>
             </div>
 
             {draft?.addr === c.address && (
               <div className="mt-3 flex flex-col gap-2">
-                <input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder="Update title" className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm" />
-                <textarea value={draft.body} onChange={(e) => setDraft({ ...draft, body: e.target.value })} placeholder="What's new?" rows={3} className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm" />
+                <input value={draft.title} onChange={(e) => setDraft({ ...draft, title: e.target.value })} placeholder={t('creator.updateTitle')} className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm" />
+                <textarea value={draft.body} onChange={(e) => setDraft({ ...draft, body: e.target.value })} placeholder={t('creator.updateBody')} rows={3} className="rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm" />
                 <div className="flex gap-2">
-                  <button onClick={submitUpdate} className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-1.5 text-sm font-medium text-white">Publish</button>
-                  <button onClick={() => setDraft(null)} className="rounded-lg border border-white/10 px-3 py-1.5 text-sm">Cancel</button>
+                  <button onClick={submitUpdate} className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-1.5 text-sm font-medium text-white">{t('creator.publish')}</button>
+                  <button onClick={() => setDraft(null)} className="rounded-lg border border-white/10 px-3 py-1.5 text-sm">{t('creator.cancel')}</button>
                 </div>
               </div>
             )}

@@ -1,30 +1,18 @@
 'use client';
 import { useEffect, useState } from 'react';
+import { useI18n } from '@/i18n/I18nProvider';
+import type { MessageKey } from '@/i18n/messages';
 
 // First-run guided tour to lift the visit→connect→contribute funnel. Centered
 // spotlight card, dismissed once (localStorage sf.tourDone).
-const STEPS = [
-  {
-    icon: '👛',
-    title: 'Connect a wallet',
-    body: 'Freighter, xBull, Albedo, Lobstr and more — no sign-up, no email. Your wallet is your identity.',
-    hint: 'Look for “Connect wallet” at the top of the page.',
-  },
-  {
-    icon: '🔎',
-    title: 'Find a campaign',
-    body: 'Browse by category or search. Every campaign is milestone-escrowed — funds unlock only as goals are met.',
-    hint: 'Scroll to the Campaigns section on the home page.',
-  },
-  {
-    icon: '⚡',
-    title: 'Contribute in seconds',
-    body: 'Back a project with XLM (minimum 0.25). Milestones and refunds are enforced by the smart contract.',
-    hint: 'Open a campaign and use “Support with XLM”.',
-  },
+const STEPS: { icon: string; title: MessageKey; body: MessageKey; hint: MessageKey }[] = [
+  { icon: '👛', title: 'tour.t1title', body: 'tour.t1body', hint: 'tour.t1hint' },
+  { icon: '🔎', title: 'tour.t2title', body: 'tour.t2body', hint: 'tour.t2hint' },
+  { icon: '⚡', title: 'tour.t3title', body: 'tour.t3body', hint: 'tour.t3hint' },
 ];
 
 export default function OnboardingTour() {
+  const { t } = useI18n();
   const [open, setOpen] = useState(false);
   const [step, setStep] = useState(0);
 
@@ -53,16 +41,16 @@ export default function OnboardingTour() {
           <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-indigo-500/30 to-fuchsia-500/30 text-4xl">
             {s.icon}
           </div>
-          <button onClick={close} className="text-sm opacity-50 hover:opacity-100">skip</button>
+          <button onClick={close} className="text-sm opacity-50 hover:opacity-100">{t('tour.skip')}</button>
         </div>
 
         <div className="text-xs font-semibold uppercase tracking-wide text-fuchsia-300">
-          Step {step + 1} of {STEPS.length}
+          {t('tour.step')} {step + 1} {t('tour.of')} {STEPS.length}
         </div>
-        <h2 className="mt-1 text-2xl font-bold">{s.title}</h2>
-        <p className="mt-2 text-sm opacity-80">{s.body}</p>
+        <h2 className="mt-1 text-2xl font-bold">{t(s.title)}</h2>
+        <p className="mt-2 text-sm opacity-80">{t(s.body)}</p>
         <div className="mt-3 rounded-lg border border-white/10 bg-white/5 px-3 py-2 text-xs opacity-70">
-          👉 {s.hint}
+          👉 {t(s.hint)}
         </div>
 
         <div className="mt-6 flex items-center justify-between">
@@ -73,13 +61,13 @@ export default function OnboardingTour() {
           </div>
           <div className="flex gap-2">
             {step > 0 && (
-              <button onClick={() => setStep((n) => n - 1)} className="rounded-lg border border-white/10 px-4 py-2 text-sm">Back</button>
+              <button onClick={() => setStep((n) => n - 1)} className="rounded-lg border border-white/10 px-4 py-2 text-sm">{t('tour.back')}</button>
             )}
             <button
               onClick={() => (last ? close() : setStep((n) => n + 1))}
               className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-5 py-2 text-sm font-medium text-white"
             >
-              {last ? 'Start exploring' : 'Next'}
+              {last ? t('tour.start') : t('tour.next')}
             </button>
           </div>
         </div>
