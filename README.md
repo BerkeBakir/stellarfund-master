@@ -11,6 +11,7 @@ fit, and real adoption. Builds on the L6 Black Belt mainnet app (same Factory �
 Reputation engine, same mainnet contracts).
 
 🔗 **Live app (mainnet):** https://stellarfund-master.vercel.app
+🎬 **Demo video:** https://youtu.be/tGgUhUwJw2A
 📈 **Growth report:** https://stellarfund-master.vercel.app/growth · [`docs/GROWTH-REPORT.md`](docs/GROWTH-REPORT.md)
 📊 **Build-in-public metrics:** https://stellarfund-master.vercel.app/metrics
 🗒️ **Changelog:** https://stellarfund-master.vercel.app/changelog

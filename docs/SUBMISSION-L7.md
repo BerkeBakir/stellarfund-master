@@ -13,7 +13,7 @@ Stellar mainnet — built on the L6 (Black Belt) mainnet app.
 - **Feedback forms (locale-aware):** TR https://docs.google.com/forms/d/e/1FAIpQLSf24RRiIRMArlFupeF-U5ZVfaxFDAvcUwOftGGpBdf62yuZtQ/viewform · EN https://docs.google.com/forms/d/e/1FAIpQLSfzFaDPjI_4iyNo4tLr1po8KYTkyd_km9tsZF0pYV30uhQFRA/viewform → export to [`docs/feedback/`](feedback/)
 - **Security review:** [`docs/SECURITY.md`](SECURITY.md) (contracts + L7 web/off-chain addendum)
 - **Feedback-driven improvement commits:** see the README "Feedback-driven improvements" table
-- **Demo video:** `<add link>`
+- **Demo video:** https://youtu.be/tGgUhUwJw2A
 - **Twitter/X:** https://x.com/Berkebey001 — product-update posts `<add permalinks>`
 - **Community contribution:** https://dev.to/berkebey01/building-milestone-escrow-crowdfunding-on-soroban-5hc
 
