@@ -12,8 +12,8 @@ export type SocialMetrics = {
   followersStart: number; // at period start, to show growth delta
   updatePosts: number; // product-update posts published
   communityContributions: number; // blog/tutorial/workshop/OSS contributions
-  // Short narrative bullets for the report body.
-  highlights: string[];
+  // Short narrative bullets for the report body (bilingual).
+  highlights: { en: string[]; tr: string[] };
   // Links the user fills in as proof (screenshots, post URLs).
   socialProofUrls: string[];
 };
@@ -25,11 +25,20 @@ export const SOCIAL: SocialMetrics = {
   followersStart: 0,
   updatePosts: 0,
   communityContributions: 1, // dev.to technical blog (from L6, ongoing)
-  highlights: [
-    'Launched the Founder-Belt build: analytics pipeline, growth report, referral & creator tooling.',
-    'Streamlined onboarding (wallet restore, one-step contribute) keeps friction low for new mainnet users.',
-    'Build-in-public: live /metrics board and monthly growth report published.',
-  ],
+  highlights: {
+    en: [
+      'Launched the Founder-Belt build: analytics pipeline, growth report, referral & creator tooling.',
+      'Streamlined onboarding (wallet restore, one-step contribute) keeps friction low for new mainnet users.',
+      'Build-in-public: live metrics board and monthly growth report published.',
+      'Full Turkish/English localization across the app.',
+    ],
+    tr: [
+      'Founder-Belt sürümü yayınlandı: analitik hattı, büyüme raporu, referral ve oluşturucu araçları.',
+      'Sadeleştirilmiş onboarding (cüzdan geri yükleme, tek adımda katkı) sürtünmeyi düşük tutuyor.',
+      'Halka açık geliştirme: canlı metrik panosu ve aylık büyüme raporu yayınlandı.',
+      'Uygulama genelinde tam Türkçe/İngilizce yerelleştirme.',
+    ],
+  },
   socialProofUrls: [
     // e.g. 'https://x.com/Berkebey001/status/…'
   ],

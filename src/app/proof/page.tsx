@@ -4,8 +4,10 @@ import Link from 'next/link';
 import { getProofData, type ProofData } from '@/lib/proof';
 import { stroopsToXlm, truncate } from '@/lib/format';
 import { explorerAccountUrl, explorerTxUrl } from '@/lib/config';
+import { useI18n } from '@/i18n/I18nProvider';
 
 export default function ProofPage() {
+  const { t } = useI18n();
   const [data, setData] = useState<ProofData | null>(null);
   const [error, setError] = useState<string | null>(null);
 
@@ -16,7 +18,7 @@ export default function ProofPage() {
         const d = await getProofData();
         if (active) setData(d);
       } catch (e) {
-        if (active) setError(e instanceof Error ? e.message : 'Failed to load proof data');
+        if (active) setError(e instanceof Error ? e.message : t('proof.error'));
       }
     })();
     return () => {
@@ -28,41 +30,34 @@ export default function ProofPage() {
     <main className="mx-auto flex max-w-3xl flex-col gap-5 p-4 sm:p-6">
       <header className="flex flex-col gap-1">
         <Link href="/" className="text-xs text-indigo-300 underline">
-          ← back
+          {t('back')}
         </Link>
-        <h1 className="text-2xl font-bold text-gradient">User-interaction proof</h1>
-        <p className="text-sm opacity-70">
-          Every contribution is a real, wallet-signed transaction on Stellar mainnet — permanent
-          and publicly verifiable. Unique backer wallets are listed below with links to
-          stellar.expert.
-        </p>
+        <h1 className="text-2xl font-bold text-gradient">{t('proof.title')}</h1>
+        <p className="text-sm opacity-70">{t('proof.subtitle')}</p>
       </header>
 
       {error && <p className="text-sm text-red-400">{error}</p>}
-      {!data && !error && <p className="text-sm opacity-60">Reading the chain…</p>}
+      {!data && !error && <p className="text-sm opacity-60">{t('proof.reading')}</p>}
 
       {data && (
         <>
           <div className="grid grid-cols-3 gap-3">
-            <Stat label="Unique backers" value={String(data.uniqueBackers)} />
-            <Stat label="Contributions" value={String(data.totalContributions)} />
-            <Stat label="Volume (XLM)" value={stroopsToXlm(data.totalVolume)} />
+            <Stat label={t('proof.uniqueBackers')} value={String(data.uniqueBackers)} />
+            <Stat label={t('proof.contributions')} value={String(data.totalContributions)} />
+            <Stat label={t('proof.volume')} value={stroopsToXlm(data.totalVolume)} />
           </div>
 
           {data.backers.length === 0 ? (
-            <p className="text-sm opacity-60">
-              No contributions in the current RPC window yet. Once backers contribute, they appear
-              here automatically. (Full history is always on stellar.expert.)
-            </p>
+            <p className="text-sm opacity-60">{t('proof.empty')}</p>
           ) : (
             <div className="glass overflow-hidden rounded-xl border border-white/10">
               <table className="w-full text-sm">
                 <thead className="bg-white/5 text-left text-xs uppercase opacity-70">
                   <tr>
                     <th className="px-3 py-2">#</th>
-                    <th className="px-3 py-2">Backer wallet</th>
+                    <th className="px-3 py-2">{t('proof.wallet')}</th>
                     <th className="px-3 py-2">XLM</th>
-                    <th className="px-3 py-2">Tx</th>
+                    <th className="px-3 py-2">{t('proof.tx')}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -91,7 +86,7 @@ export default function ProofPage() {
                             rel="noopener noreferrer"
                             className="text-indigo-300 underline"
                           >
-                            view
+                            {t('proof.view')}
                           </a>
                         ) : (
                           <span className="opacity-40">—</span>
@@ -104,7 +99,7 @@ export default function ProofPage() {
             </div>
           )}
           <p className="text-xs opacity-50">
-            Window: ledgers {data.windowStartLedger}–{data.latestLedger} (mainnet RPC retention).
+            {t('proof.window')} {data.windowStartLedger}–{data.latestLedger} {t('proof.retention')}
           </p>
         </>
       )}

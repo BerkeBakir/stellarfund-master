@@ -1,6 +1,6 @@
 'use client';
 import Link from 'next/link';
-import { sortedChangelog, type ChangeStatus } from '@/lib/changelog';
+import { sortedChangelog, localizedChangelog, type ChangeStatus } from '@/lib/changelog';
 import { useI18n } from '@/i18n/I18nProvider';
 
 const badge: Record<ChangeStatus, string> = {
@@ -10,8 +10,8 @@ const badge: Record<ChangeStatus, string> = {
 };
 
 export default function ChangelogPage() {
-  const { t } = useI18n();
-  const entries = sortedChangelog();
+  const { t, locale } = useI18n();
+  const entries = sortedChangelog(localizedChangelog(locale));
   const statusLabel: Record<ChangeStatus, string> = {
     shipped: t('cl.shipped'),
     'in-progress': t('cl.inProgress'),

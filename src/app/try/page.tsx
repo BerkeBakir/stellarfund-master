@@ -7,10 +7,10 @@ import { useI18n } from '@/i18n/I18nProvider';
 export default function TryPage() {
   const { t } = useI18n();
   const steps: [string, string][] = [
-    ['Open the testnet app', 'A full copy of StellarFund running on Stellar testnet.'],
-    ['Get free test XLM/USDC', 'One tap funds your wallet — no faucet hunting.'],
-    ['Contribute to a demo campaign', 'A real, wallet-signed testnet transaction you can verify.'],
-    ['Ready for the real thing?', 'Come back here and contribute real XLM on mainnet.'],
+    [t('try.s1t'), t('try.s1d')],
+    [t('try.s2t'), t('try.s2d')],
+    [t('try.s3t'), t('try.s3d')],
+    [t('try.s4t'), t('try.s4d')],
   ];
   return (
     <main className="mx-auto flex max-w-2xl flex-col gap-5 p-4 sm:p-6">

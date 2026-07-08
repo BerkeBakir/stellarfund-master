@@ -10,10 +10,12 @@ import { getProofData } from '@/lib/proof';
 import { HIDDEN_CAMPAIGNS } from '@/lib/config';
 import { stroopsToXlm } from '@/lib/format';
 import MiniBars from '@/components/MiniBars';
+import { useI18n } from '@/i18n/I18nProvider';
 
 type Row = { address: string; raised: bigint; goal: bigint; meta?: CampaignMeta };
 
 function Dashboard() {
+  const { t } = useI18n();
   const params = useSearchParams();
   const requiredKey = process.env.NEXT_PUBLIC_STATS_KEY;
   const [unlocked, setUnlocked] = useState(!requiredKey);
@@ -76,7 +78,7 @@ function Dashboard() {
   if (!unlocked) {
     return (
       <div className="glass mx-auto mt-10 flex max-w-sm flex-col gap-2 rounded-xl border border-white/10 p-5">
-        <p className="text-sm">This dashboard is private. Enter the access key.</p>
+        <p className="text-sm">{t('st.private')}</p>
         <input
           value={keyInput}
           onChange={(e) => setKeyInput(e.target.value)}
@@ -92,7 +94,7 @@ function Dashboard() {
           }}
           className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-2 text-sm font-medium text-white"
         >
-          Unlock
+          {t('st.unlock')}
         </button>
       </div>
     );
@@ -107,16 +109,16 @@ function Dashboard() {
   const topCampaigns = [...rows].sort((a, b) => Number(b.raised - a.raised)).slice(0, 6);
 
   const stats = [
-    ['Campaigns', String(rows.length)],
-    ['Unique backers', String(proof.uniqueBackers)],
-    ['Contributions', String(proof.totalContributions)],
-    ['Volume (XLM)', stroopsToXlm(proof.totalVolume)],
-    ['Total raised (XLM)', stroopsToXlm(totalRaised)],
+    [t('st.campaigns'), String(rows.length)],
+    [t('st.backers'), String(proof.uniqueBackers)],
+    [t('st.contributions'), String(proof.totalContributions)],
+    [t('st.volume'), stroopsToXlm(proof.totalVolume)],
+    [t('st.totalRaised'), stroopsToXlm(totalRaised)],
   ];
 
   return (
     <div className="flex flex-col gap-5">
-      {loading && <p className="text-sm opacity-60">Reading the chain…</p>}
+      {loading && <p className="text-sm opacity-60">{t('st.reading')}</p>}
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-5">
         {stats.map(([label, value]) => (
@@ -129,7 +131,7 @@ function Dashboard() {
 
       <div className="glass rounded-xl border border-white/10 p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">
-          Campaigns by category
+          {t('st.byCategory')}
         </h3>
         <div className="flex flex-col gap-2">
           {byCategory.map((b) => (
@@ -150,14 +152,14 @@ function Dashboard() {
       {analytics && (
         <div className="glass rounded-xl border border-white/10 p-5">
           <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">
-            Acquisition funnel
+            {t('st.funnel')}
           </h3>
           <div className="flex flex-col gap-2 text-sm">
             {([
-              ['Visits', analytics.funnel.visits],
-              ['Connects', analytics.funnel.connects],
-              ['Contribute intents', analytics.funnel.contributeIntents],
-              ['Shares', analytics.funnel.shares],
+              [t('st.fVisits'), analytics.funnel.visits],
+              [t('st.fConnects'), analytics.funnel.connects],
+              [t('st.fIntents'), analytics.funnel.contributeIntents],
+              [t('st.fShares'), analytics.funnel.shares],
             ] as const).map(([label, n]) => {
               const max = Math.max(1, analytics.funnel.visits);
               return (
@@ -174,7 +176,7 @@ function Dashboard() {
           {analytics.cohorts.length > 0 && (
             <div className="mt-4">
               <MiniBars
-                label="Weekly active wallets"
+                label={t('st.weekly')}
                 data={analytics.cohorts.map((c) => ({ label: c.week.slice(5), value: c.wallets }))}
               />
             </div>
@@ -184,7 +186,7 @@ function Dashboard() {
 
       <div className="glass rounded-xl border border-white/10 p-5">
         <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">
-          Top campaigns by raised
+          {t('st.topCampaigns')}
         </h3>
         <div className="flex flex-col gap-2">
           {topCampaigns.map((r) => (
@@ -202,19 +204,17 @@ function Dashboard() {
 }
 
 export default function StatsPage() {
+  const { t } = useI18n();
   return (
     <main className="mx-auto flex max-w-3xl flex-col gap-5 p-4 sm:p-6">
       <header className="flex flex-col gap-1">
         <Link href="/" className="text-xs text-indigo-300 underline">
-          ← back
+          {t('back')}
         </Link>
-        <h1 className="text-2xl font-bold text-gradient">Analytics</h1>
-        <p className="text-sm opacity-70">
-          Live, on-chain analytics for StellarFund — computed from the contracts, no third-party
-          tracker.
-        </p>
+        <h1 className="text-2xl font-bold text-gradient">{t('st.title')}</h1>
+        <p className="text-sm opacity-70">{t('st.subtitle')}</p>
       </header>
-      <Suspense fallback={<p className="text-sm opacity-60">Loading…</p>}>
+      <Suspense fallback={<p className="text-sm opacity-60">{t('st.loading')}</p>}>
         <Dashboard />
       </Suspense>
     </main>

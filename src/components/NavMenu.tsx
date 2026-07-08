@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import { useI18n } from '@/i18n/I18nProvider';
+import LanguageSwitcher from '@/components/LanguageSwitcher';
 import type { MessageKey } from '@/i18n/messages';
 
 // Global slide-in navigation. A fixed hamburger button (top-right) opens a panel
@@ -47,6 +48,10 @@ export default function NavMenu() {
             <div className="mb-2 flex items-center justify-between">
               <span className="font-bold text-gradient">StellarFund</span>
               <button aria-label="Close" onClick={() => setOpen(false)} className="rounded-lg px-2 py-1 text-lg opacity-60 hover:opacity-100">✕</button>
+            </div>
+            <div className="mb-2 flex items-center gap-2 px-1">
+              <span className="text-xs opacity-50">🌐</span>
+              <LanguageSwitcher />
             </div>
             {LINKS.map(([href, icon, label]) => (
               <Link
