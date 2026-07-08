@@ -12,7 +12,6 @@ const LINKS: [string, string, string][] = [
   ['/proof', '🧾', 'Proof of users'],
   ['/metrics', '📊', 'Live metrics'],
   ['/growth', '📈', 'Growth report'],
-  ['/stats', '🔐', 'Analytics'],
   ['/changelog', '🗒️', 'Changelog'],
   ['/testimonials', '💬', 'Reviews'],
   ['/try', '🧪', 'Try free (testnet)'],

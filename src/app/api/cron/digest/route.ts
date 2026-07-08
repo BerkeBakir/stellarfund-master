@@ -1,9 +1,10 @@
 import { NextResponse } from 'next/server';
 import { list } from '@vercel/blob';
+import { sendBrevoEmail } from '@/lib/brevo';
 
 // Weekly digest cron. Configure in vercel.json crons -> /api/cron/digest.
-// Sends via Resend when RESEND_API_KEY + DIGEST_FROM are set; otherwise it is a
-// safe no-op (logs the audience size). Protected by CRON_SECRET when set.
+// Sends via Brevo when BREVO_API_KEY + BREVO_SENDER_EMAIL are set; otherwise it is
+// a safe no-op (logs the audience size). Protected by CRON_SECRET when set.
 const token = process.env.BLOB_READ_WRITE_TOKEN;
 
 type Subscriber = { email: string; wallet: string | null; at: string };
@@ -39,28 +40,18 @@ export async function GET(req: Request) {
     return NextResponse.json({ ok: true, sent: 0, reason: 'list failed' });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.DIGEST_FROM;
-  if (!apiKey || !from) {
-    console.log(`[digest] would email ${subs.length} subscribers (Resend not configured)`);
+  if (!process.env.BREVO_API_KEY || !process.env.BREVO_SENDER_EMAIL) {
+    console.log(`[digest] would email ${subs.length} subscribers (Brevo not configured)`);
     return NextResponse.json({ ok: true, sent: 0, audience: subs.length, reason: 'email not configured' });
   }
 
   const base = 'https://stellarfund-master.vercel.app';
+  const html = `<h2>StellarFund — weekly digest</h2><p>New activity on StellarFund this week.</p><p><a href="${base}/">Browse campaigns</a> · <a href="${base}/metrics">Live metrics</a> · <a href="${base}/changelog">What's new</a></p>`;
   let sent = 0;
   for (const s of subs) {
     try {
-      const res = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: { authorization: `Bearer ${apiKey}`, 'content-type': 'application/json' },
-        body: JSON.stringify({
-          from,
-          to: s.email,
-          subject: 'StellarFund — your weekly campaign digest',
-          html: `<p>New activity on StellarFund this week.</p><p><a href="${base}/">Browse campaigns</a> · <a href="${base}/metrics">Live metrics</a></p>`,
-        }),
-      });
-      if (res.ok) sent += 1;
+      const r = await sendBrevoEmail({ to: s.email, subject: 'StellarFund — your weekly campaign digest', html });
+      if (r.ok) sent += 1;
     } catch {
       /* skip failed recipient */
     }
