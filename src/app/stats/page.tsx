@@ -9,6 +9,7 @@ import { getAllMetadata, type CampaignMeta, CATEGORIES } from '@/lib/metadata';
 import { getProofData } from '@/lib/proof';
 import { HIDDEN_CAMPAIGNS } from '@/lib/config';
 import { stroopsToXlm } from '@/lib/format';
+import MiniBars from '@/components/MiniBars';
 
 type Row = { address: string; raised: bigint; goal: bigint; meta?: CampaignMeta };
 
@@ -172,12 +173,10 @@ function Dashboard() {
           </div>
           {analytics.cohorts.length > 0 && (
             <div className="mt-4">
-              <h4 className="mb-1 text-xs font-semibold uppercase tracking-wide opacity-60">Weekly active wallets</h4>
-              <div className="flex flex-wrap gap-2 text-xs opacity-80">
-                {analytics.cohorts.map((c) => (
-                  <span key={c.week} className="rounded-full bg-white/10 px-2 py-0.5">{c.week}: {c.wallets}</span>
-                ))}
-              </div>
+              <MiniBars
+                label="Weekly active wallets"
+                data={analytics.cohorts.map((c) => ({ label: c.week.slice(5), value: c.wallets }))}
+              />
             </div>
           )}
         </div>

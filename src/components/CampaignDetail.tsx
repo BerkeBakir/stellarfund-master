@@ -16,7 +16,7 @@ import { getXlmBalance } from '@/lib/onboard';
 import { getAllMetadata, type CampaignMeta } from '@/lib/metadata';
 import { useAppStore } from '@/store';
 import { stroopsToXlm, xlmToStroops, pct, timeLeft, truncate } from '@/lib/format';
-import { explorerContractUrl } from '@/lib/config';
+import { explorerContractUrl, MIN_CONTRIB_STROOPS } from '@/lib/config';
 import TxStatus from './TxStatus';
 import ReputationBadge from './ReputationBadge';
 import { track } from '@/lib/track';
@@ -142,11 +142,11 @@ export default function CampaignDetail({ id }: { id: string }) {
   } catch {
     amt = 0n;
   }
-  const amtOk = amt > 0n;
-  const overGoal = amtOk && remaining > 0n && amt > remaining;
+  const amtOk = amt >= MIN_CONTRIB_STROOPS;
+  const belowMin = amt > 0n && amt < MIN_CONTRIB_STROOPS;
 
   const canContribute =
-    connected && summary.status === 0 && !ended && amtOk && !overGoal && remaining > 0n && !busy && !lowBalance;
+    connected && summary.status === 0 && !ended && amtOk && !busy && !lowBalance;
   const canRelease =
     connected && isCreator && releasable && ended && goalMet && nextIndex < milestones.length && !busy;
   const canRefund =
@@ -242,9 +242,7 @@ export default function CampaignDetail({ id }: { id: string }) {
         <div className="glass flex flex-col gap-2 rounded-xl border border-white/10 p-5">
           <div className="flex items-center justify-between">
             <label className="text-sm font-medium">Support with XLM</label>
-            <span className="rounded-full bg-emerald-400/15 px-2 py-0.5 text-xs text-emerald-300">
-              ⚡ Gasless — network fee sponsored
-            </span>
+            <span className="text-xs opacity-60">Min 0.25 XLM</span>
           </div>
           {connected && lowBalance && (
             <div className="flex flex-col gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm">
@@ -287,9 +285,9 @@ export default function CampaignDetail({ id }: { id: string }) {
               <span className="opacity-60">Balance: {xlmBalance.toFixed(2)} XLM</span>
             )}
           </div>
-          {overGoal && (
+          {belowMin && (
             <span className="text-xs text-amber-400">
-              Amount exceeds what’s left to reach the goal ({stroopsToXlm(remaining)} XLM).
+              Minimum contribution is 0.25 XLM.
             </span>
           )}
           <button

@@ -4,12 +4,14 @@ import Link from 'next/link';
 import { getProofData } from '@/lib/proof';
 import { stroopsToXlm } from '@/lib/format';
 import { SOCIAL, followerGrowth } from '@/lib/growthReport';
+import MiniBars from '@/components/MiniBars';
 import type { Funnel } from '@/lib/retention';
 
 type Analytics = {
   totalEvents: number;
   funnel: Funnel;
   newWalletsThisWeek: number;
+  cohorts: { week: string; wallets: number }[];
 };
 
 function Tile({ label, value, note }: { label: string; value: string; note?: string }) {
@@ -92,6 +94,11 @@ export default function MetricsPage() {
           })}
           <p className="mt-1 text-xs opacity-60">Visit → contribute-intent conversion: {conv}%</p>
         </div>
+      </section>
+
+      <section className="glass rounded-xl border border-white/10 p-5">
+        <h3 className="mb-3 text-sm font-semibold uppercase tracking-wide opacity-70">Weekly active wallets</h3>
+        <MiniBars data={(a?.cohorts ?? []).map((c) => ({ label: c.week.slice(5), value: c.wallets }))} />
       </section>
 
       <section className="grid grid-cols-2 gap-3 sm:grid-cols-4">

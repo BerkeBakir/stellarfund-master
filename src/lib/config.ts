@@ -33,6 +33,13 @@ export const FEEDBACK_FORM_URL =
   process.env.NEXT_PUBLIC_FEEDBACK_FORM_URL ??
   'https://docs.google.com/forms/d/e/1FAIpQLSdPHTcL_s4Q2TTPq6YpXOhP0XYzS-EGpXm1nKwajXKU_lMOQw/viewform';
 
+// Fee Sponsorship (gasless) toggle. Disabled: contributors pay the (tiny) network
+// fee themselves and no sponsor account is needed. Flip to true to re-enable.
+export const GASLESS_ENABLED = false;
+
+// Minimum contribution: 0.25 XLM (in stroops). No maximum.
+export const MIN_CONTRIB_STROOPS = 2_500_000n;
+
 // SEP-24 anchor demo. testanchor is testnet-only, so on the mainnet build the
 // /ramp page is shown as a protocol demonstration and gated behind this flag.
 export const ANCHOR_ENABLED = false;

@@ -32,6 +32,7 @@ export default function WalletBar() {
       const pk = await openWalletModal();
       setWallet(pk);
       track('connect', { wallet: pk ?? undefined });
+      try { sessionStorage.setItem('sf.connectTracked', '1'); } catch { /* ignore */ }
       toast.success('Wallet connected.');
     } catch (e) {
       toast.error(e instanceof Error ? e.message : 'Failed to connect.');

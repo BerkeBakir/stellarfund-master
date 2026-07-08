@@ -2,7 +2,7 @@ import {
   rpc, Contract, TransactionBuilder, nativeToScVal, scValToNative,
   Address, Account, Keypair, BASE_FEE, xdr,
 } from '@stellar/stellar-sdk';
-import { RPC_URL, NETWORK_PASSPHRASE } from './config';
+import { RPC_URL, NETWORK_PASSPHRASE, GASLESS_ENABLED } from './config';
 import { signXdr } from './wallet';
 
 export const server = new rpc.Server(RPC_URL);
@@ -65,20 +65,22 @@ export async function invoke(
   // (the user pays no network fee). If it returns { sponsored: false }, fall
   // through to a normal submission. On a sponsor error we throw (do NOT also
   // submit directly — that would risk a double transaction).
-  const sponsorRes = await fetch('/api/sponsor', {
-    method: 'POST',
-    headers: { 'content-type': 'application/json' },
-    body: JSON.stringify({ xdr: signedXdr }),
-  });
-  const sponsorData = await sponsorRes.json().catch(() => ({}) as Record<string, unknown>);
-  if (sponsorRes.ok && sponsorData.sponsored && typeof sponsorData.hash === 'string') {
-    return sponsorData.hash;
-  }
-  if (!(sponsorRes.ok && sponsorData.sponsored === false)) {
-    throw new Error('Transaction could not be completed. Please try again.');
+  if (GASLESS_ENABLED) {
+    const sponsorRes = await fetch('/api/sponsor', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ xdr: signedXdr }),
+    });
+    const sponsorData = await sponsorRes.json().catch(() => ({}) as Record<string, unknown>);
+    if (sponsorRes.ok && sponsorData.sponsored && typeof sponsorData.hash === 'string') {
+      return sponsorData.hash;
+    }
+    if (!(sponsorRes.ok && sponsorData.sponsored === false)) {
+      throw new Error('Transaction could not be completed. Please try again.');
+    }
   }
 
-  // Sponsor disabled — submit directly (user pays the fee).
+  // Gasless disabled (or sponsor declined) — submit directly (user pays the fee).
   const signedTx = TransactionBuilder.fromXDR(signedXdr, NETWORK_PASSPHRASE);
   const sent = await withRetry(() => server.sendTransaction(signedTx));
   if (sent.status === 'ERROR') {

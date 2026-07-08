@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { TESTIMONIALS } from '@/lib/trust';
+import { FEEDBACK_FORM_URL } from '@/lib/config';
 
 export const metadata = {
   title: 'What people say — StellarFund',
@@ -18,7 +19,7 @@ export default function TestimonialsPage() {
       {TESTIMONIALS.length === 0 ? (
         <div className="glass rounded-xl border border-white/10 p-5 text-sm opacity-70">
           <p>We&apos;re collecting feedback now. Tried StellarFund?{' '}
-            <a className="text-indigo-300 underline" href="/#campaigns">Share your experience</a> via the feedback form —
+            <a className="text-indigo-300 underline" href={FEEDBACK_FORM_URL} target="_blank" rel="noopener noreferrer">Share your experience</a> via the feedback form —
             real quotes will appear here.</p>
         </div>
       ) : (
