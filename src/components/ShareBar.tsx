@@ -3,10 +3,12 @@ import { toast } from 'sonner';
 import { useAppStore } from '@/store';
 import { track } from '@/lib/track';
 import { refLink } from '@/lib/validate';
+import { useI18n } from '@/i18n/I18nProvider';
 
 // One-click sharing with referral attribution. Builds a ?ref=<wallet> link when
 // a wallet is connected. Uses real <a> links (open reliably; no popup blocker).
 export default function ShareBar({ path, text }: { path: string; text: string }) {
+  const { t } = useI18n();
   const publicKey = useAppStore((s) => s.publicKey);
   const base = typeof window !== 'undefined' ? window.location.origin : 'https://stellarfund-master.vercel.app';
   const u = refLink(base, path, publicKey ?? undefined);
@@ -26,7 +28,7 @@ export default function ShareBar({ path, text }: { path: string; text: string })
 
   return (
     <div className="flex flex-wrap items-center gap-2 text-sm">
-      <span className="opacity-60">Share:</span>
+      <span className="opacity-60">{t('cd.share')}</span>
       {links.map(([label, href]) => (
         <a
           key={label}
@@ -51,7 +53,7 @@ export default function ShareBar({ path, text }: { path: string; text: string })
         }}
         className="rounded-lg border border-white/10 px-2 py-1 hover:bg-white/10"
       >
-        Copy link
+        {t('cd.copyLink')}
       </button>
     </div>
   );

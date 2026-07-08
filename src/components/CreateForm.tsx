@@ -6,6 +6,7 @@ import { createCampaign } from '@/lib/factory';
 import { useAppStore } from '@/store';
 import { xlmToStroops, stroopsToXlm } from '@/lib/format';
 import { CATEGORIES, putMetadata, uploadCover } from '@/lib/metadata';
+import { useI18n } from '@/i18n/I18nProvider';
 
 function parse(amount: string): bigint | null {
   try {
@@ -17,6 +18,7 @@ function parse(amount: string): bigint | null {
 }
 
 export default function CreateForm() {
+  const { t } = useI18n();
   const router = useRouter();
   const { connected, publicKey } = useAppStore();
   const [title, setTitle] = useState('');
@@ -87,27 +89,27 @@ export default function CreateForm() {
 
   return (
     <div className="glass flex flex-col gap-3 rounded-xl border border-white/10 p-5">
-      <label className="text-sm font-medium">Title</label>
+      <label className="text-sm font-medium">{t('cf.title')}</label>
       <input
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        placeholder="Bakery in Nairobi"
+        placeholder={t('cf.titlePh')}
         className="rounded-lg border border-white/10 bg-transparent px-3 py-2"
       />
-      {title !== '' && !titleOk && <span className="text-xs text-red-400">Title is required.</span>}
+      {title !== '' && !titleOk && <span className="text-xs text-red-400">{t('cf.titleReq')}</span>}
 
-      <label className="text-sm font-medium">Description</label>
+      <label className="text-sm font-medium">{t('cf.desc')}</label>
       <textarea
         value={description}
         onChange={(e) => setDescription(e.target.value)}
         rows={3}
-        placeholder="What are you raising for, and how will the milestones be used?"
+        placeholder={t('cf.descPh')}
         className="rounded-lg border border-white/10 bg-transparent px-3 py-2"
       />
 
       <div className="grid grid-cols-2 gap-2">
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium">Category</label>
+          <label className="text-sm font-medium">{t('cf.category')}</label>
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
@@ -121,17 +123,17 @@ export default function CreateForm() {
           </select>
         </div>
         <div className="flex flex-col gap-1">
-          <label className="text-sm font-medium">Creator name</label>
+          <label className="text-sm font-medium">{t('cf.creatorName')}</label>
           <input
             value={creatorName}
             onChange={(e) => setCreatorName(e.target.value)}
-            placeholder="Jane"
+            placeholder={t('cf.creatorNamePh')}
             className="rounded-lg border border-white/10 bg-transparent px-3 py-2"
           />
         </div>
       </div>
 
-      <label className="text-sm font-medium">Cover image (optional, ≤ 2 MB)</label>
+      <label className="text-sm font-medium">{t('cf.cover')}</label>
       <input
         type="file"
         accept="image/jpeg,image/png,image/webp"
@@ -139,7 +141,7 @@ export default function CreateForm() {
         className="text-sm file:mr-3 file:rounded-lg file:border-0 file:bg-white/10 file:px-3 file:py-1.5 file:text-white"
       />
 
-      <label className="mt-2 text-sm font-medium">Goal (XLM)</label>
+      <label className="mt-2 text-sm font-medium">{t('cf.goal')}</label>
       <input
         value={goal}
         onChange={(e) => setGoal(e.target.value)}
@@ -148,22 +150,22 @@ export default function CreateForm() {
         className="rounded-lg border border-white/10 bg-transparent px-3 py-2"
       />
       {goal !== '' && goalUnits === null && (
-        <span className="text-xs text-red-400">Enter a positive amount (max 7 decimals).</span>
+        <span className="text-xs text-red-400">{t('cf.goalErr')}</span>
       )}
 
-      <label className="text-sm font-medium">Duration (days)</label>
+      <label className="text-sm font-medium">{t('cf.duration')}</label>
       <input
         value={days}
         onChange={(e) => setDays(e.target.value)}
         inputMode="numeric"
         className="rounded-lg border border-white/10 bg-transparent px-3 py-2"
       />
-      {!daysOk && <span className="text-xs text-red-400">At least 1 day.</span>}
+      {!daysOk && <span className="text-xs text-red-400">{t('cf.durationErr')}</span>}
 
       <div className="mt-2 flex items-center justify-between">
-        <label className="text-sm font-medium">Milestones (must sum to goal)</label>
+        <label className="text-sm font-medium">{t('cf.milestonesSum')}</label>
         <button type="button" onClick={addMilestone} className="text-xs text-indigo-300 underline">
-          + add
+          {t('cf.add')}
         </button>
       </div>
       {milestones.map((m, i) => (
@@ -189,12 +191,12 @@ export default function CreateForm() {
       ))}
       <div className="flex justify-between text-xs">
         <span className="opacity-60">
-          Sum: {stroopsToXlm(sum)} {goalUnits !== null ? `/ ${stroopsToXlm(goalUnits)}` : ''} XLM
+          {t('cf.sum')}: {stroopsToXlm(sum)} {goalUnits !== null ? `/ ${stroopsToXlm(goalUnits)}` : ''} XLM
         </span>
         {goalUnits !== null && allMilestonesOk && !sumMatchesGoal && (
-          <span className="text-red-400">Milestones must sum to the goal.</span>
+          <span className="text-red-400">{t('cf.sumErr')}</span>
         )}
-        {sumMatchesGoal && <span className="text-emerald-400">✓ matches goal</span>}
+        {sumMatchesGoal && <span className="text-emerald-400">{t('cf.sumOk')}</span>}
       </div>
 
       <button
@@ -202,9 +204,9 @@ export default function CreateForm() {
         disabled={!canSubmit}
         className="mt-1 rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-4 py-2 font-medium text-white disabled:opacity-40"
       >
-        {busy ? 'Creating…' : 'Create campaign'}
+        {busy ? t('cf.creating') : t('cf.create')}
       </button>
-      {!connected && <span className="text-xs opacity-60">Connect a wallet first.</span>}
+      {!connected && <span className="text-xs opacity-60">{t('cd.connectFirst')}</span>}
     </div>
   );
 }

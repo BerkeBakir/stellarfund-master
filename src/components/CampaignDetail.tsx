@@ -20,8 +20,10 @@ import { explorerContractUrl, MIN_CONTRIB_STROOPS } from '@/lib/config';
 import TxStatus from './TxStatus';
 import ReputationBadge from './ReputationBadge';
 import { track } from '@/lib/track';
+import { useI18n } from '@/i18n/I18nProvider';
 
 export default function CampaignDetail({ id }: { id: string }) {
+  const { t } = useI18n();
   const { connected, publicKey, events, setTxStatus, setTxResult } = useAppStore();
   const [summary, setSummary] = useState<Summary | null>(null);
   const [milestones, setMilestones] = useState<Milestone[]>([]);
@@ -241,15 +243,13 @@ export default function CampaignDetail({ id }: { id: string }) {
       {summary.status === 0 && !ended && (
         <div className="glass flex flex-col gap-2 rounded-xl border border-white/10 p-5">
           <div className="flex items-center justify-between">
-            <label className="text-sm font-medium">Support with XLM</label>
-            <span className="text-xs opacity-60">Min 0.25 XLM</span>
+            <label className="text-sm font-medium">{t('cd.support')}</label>
+            <span className="text-xs opacity-60">{t('cd.min')}</span>
           </div>
           {connected && lowBalance && (
             <div className="flex flex-col gap-2 rounded-lg border border-amber-400/30 bg-amber-400/10 p-3 text-sm">
               <span>
-                {xlmBalance === null
-                  ? 'Your account isn’t funded yet. Send a little XLM to your wallet to activate it, then contribute.'
-                  : 'Your XLM balance is low. Keep enough XLM for your contribution plus the base reserve and fees.'}
+                {xlmBalance === null ? t('cd.lowBalanceUnfunded') : t('cd.lowBalance')}
               </span>
               <a
                 href="https://www.stellar.org/lumens/exchanges"
@@ -257,7 +257,7 @@ export default function CampaignDetail({ id }: { id: string }) {
                 rel="noopener noreferrer"
                 className="w-fit rounded-lg border border-white/15 px-3 py-1.5 text-sm hover:bg-white/5"
               >
-                Where to get XLM ↗
+                {t('cd.whereXlm')}
               </a>
             </div>
           )}
@@ -274,21 +274,19 @@ export default function CampaignDetail({ id }: { id: string }) {
               onClick={() => setAmount(stroopsToXlm(remaining > 0n ? remaining : 0n))}
               className="rounded-lg border border-white/10 px-3 py-2 text-xs"
             >
-              Max
+              {t('cd.max')}
             </button>
           </div>
           <div className="flex justify-between text-xs">
             <span className="opacity-60">
-              Remaining to goal: {stroopsToXlm(remaining > 0n ? remaining : 0n)} XLM
+              {t('cd.remaining')}: {stroopsToXlm(remaining > 0n ? remaining : 0n)} XLM
             </span>
             {connected && xlmBalance !== null && (
-              <span className="opacity-60">Balance: {xlmBalance.toFixed(2)} XLM</span>
+              <span className="opacity-60">{t('cd.balance')}: {xlmBalance.toFixed(2)} XLM</span>
             )}
           </div>
           {belowMin && (
-            <span className="text-xs text-amber-400">
-              Minimum contribution is 0.25 XLM.
-            </span>
+            <span className="text-xs text-amber-400">{t('cd.belowMin')}</span>
           )}
           <button
             onClick={() => {
@@ -298,20 +296,30 @@ export default function CampaignDetail({ id }: { id: string }) {
             disabled={!canContribute}
             className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-4 py-2 font-medium text-white disabled:opacity-40"
           >
-            {busy ? 'Sending…' : 'Contribute'}
+            {busy ? t('cd.contributing') : t('cd.contribute')}
           </button>
-          {!connected && <span className="text-xs opacity-60">Connect a wallet first.</span>}
+          {!connected && <span className="text-xs opacity-60">{t('cd.connectFirst')}</span>}
         </div>
       )}
 
-      {ended && goalMet && isCreator && releasable && (
-        <button
-          onClick={() => run(() => release(publicKey!, id, nextIndex), `Release milestone ${nextIndex + 1}`)}
-          disabled={!canRelease}
-          className="rounded-lg bg-emerald-600 px-4 py-2 font-medium disabled:opacity-40"
-        >
-          {busy ? 'Releasing…' : `Release milestone ${nextIndex + 1}`}
-        </button>
+      {/* Release section — always visible to the creator so the milestone flow is
+          clear; disabled with an explanation until the deadline passes and the
+          goal is met, then enabled to release each tranche sequentially. */}
+      {isCreator && releasable && nextIndex < milestones.length && (
+        <div className="flex flex-col gap-1">
+          <button
+            onClick={() => run(() => release(publicKey!, id, nextIndex), `Release milestone ${nextIndex + 1}`)}
+            disabled={!canRelease}
+            className="rounded-lg bg-emerald-600 px-4 py-2 font-medium disabled:opacity-40"
+          >
+            {busy ? t('cd.releasing') : `${t('cd.release')} ${nextIndex + 1}`}
+          </button>
+          {!canRelease && (
+            <span className="text-xs text-amber-300/80">
+              {!goalMet ? t('cd.releaseLockedGoal') : t('cd.releaseLockedDeadline')}
+            </span>
+          )}
+        </div>
       )}
       {ended && !goalMet && myContribution > 0n && (
         <button
@@ -319,7 +327,7 @@ export default function CampaignDetail({ id }: { id: string }) {
           disabled={!canRefund}
           className="rounded-lg border border-white/10 px-4 py-2 font-medium disabled:opacity-40"
         >
-          {busy ? 'Refunding…' : `Refund my ${stroopsToXlm(myContribution)} XLM`}
+          {busy ? t('cd.refunding') : `${t('cd.refund')} ${stroopsToXlm(myContribution)} XLM`}
         </button>
       )}
 

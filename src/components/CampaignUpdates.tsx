@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { getUpdates, type CampaignUpdate } from '@/lib/updates';
+import { useI18n } from '@/i18n/I18nProvider';
 
 // Read-only feed of creator updates shown to backers on the campaign page.
 export default function CampaignUpdates({ id }: { id: string }) {
+  const { t } = useI18n();
   const [updates, setUpdates] = useState<CampaignUpdate[]>([]);
   const [loaded, setLoaded] = useState(false);
 
@@ -19,7 +21,7 @@ export default function CampaignUpdates({ id }: { id: string }) {
 
   return (
     <section className="glass rounded-xl border border-white/10 p-4">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">Updates</h3>
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">{t('cd.updates')}</h3>
       <ul className="flex flex-col gap-3">
         {updates.map((u) => (
           <li key={u.at} className="text-sm">

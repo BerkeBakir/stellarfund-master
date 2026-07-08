@@ -28,10 +28,19 @@ export const CAMPAIGN_WASM_HASH =
 // their on-chain contributions would still count on /proof if any were added.
 export const HIDDEN_CAMPAIGNS = new Set<string>([]);
 
-// External user-feedback Google Form (L6: wallet + email + name + rating + feedback).
-export const FEEDBACK_FORM_URL =
-  process.env.NEXT_PUBLIC_FEEDBACK_FORM_URL ??
-  'https://docs.google.com/forms/d/e/1FAIpQLSdPHTcL_s4Q2TTPq6YpXOhP0XYzS-EGpXm1nKwajXKU_lMOQw/viewform';
+// External user-feedback Google Forms (L7): separate TR and EN forms.
+export const FEEDBACK_FORM_URL_TR =
+  'https://docs.google.com/forms/d/e/1FAIpQLSf24RRiIRMArlFupeF-U5ZVfaxFDAvcUwOftGGpBdf62yuZtQ/viewform';
+export const FEEDBACK_FORM_URL_EN =
+  'https://docs.google.com/forms/d/e/1FAIpQLSfzFaDPjI_4iyNo4tLr1po8KYTkyd_km9tsZF0pYV30uhQFRA/viewform';
+
+// Locale-aware picker; default (SSR / unknown) uses EN.
+export function feedbackFormUrl(locale?: string): string {
+  return locale === 'tr' ? FEEDBACK_FORM_URL_TR : FEEDBACK_FORM_URL_EN;
+}
+
+// Back-compat default (EN) for any non-localized call site.
+export const FEEDBACK_FORM_URL = FEEDBACK_FORM_URL_EN;
 
 // Fee Sponsorship (gasless) toggle. Disabled: contributors pay the (tiny) network
 // fee themselves and no sponsor account is needed. Flip to true to re-enable.

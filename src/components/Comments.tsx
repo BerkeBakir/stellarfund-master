@@ -3,11 +3,13 @@ import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 import { useAppStore } from '@/store';
 import { truncate } from '@/lib/format';
+import { useI18n } from '@/i18n/I18nProvider';
 
 type Comment = { campaign: string; author: string; body: string; at: string };
 
 // Public comments on a campaign. Anyone can read; wallet optional to post.
 export default function Comments({ id }: { id: string }) {
+  const { t } = useI18n();
   const publicKey = useAppStore((s) => s.publicKey);
   const [comments, setComments] = useState<Comment[]>([]);
   const [body, setBody] = useState('');
@@ -43,18 +45,18 @@ export default function Comments({ id }: { id: string }) {
 
   return (
     <section className="glass rounded-xl border border-white/10 p-4">
-      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">Comments</h3>
+      <h3 className="mb-2 text-sm font-semibold uppercase tracking-wide opacity-70">{t('cd.comments')}</h3>
       <div className="mb-3 flex gap-2">
         <input
           value={body}
           onChange={(e) => setBody(e.target.value)}
-          placeholder="Add a comment…"
+          placeholder={t('cd.addComment')}
           className="flex-1 rounded-lg border border-white/10 bg-transparent px-3 py-2 text-sm"
         />
-        <button onClick={submit} disabled={busy} className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-2 text-sm font-medium text-white disabled:opacity-50">Post</button>
+        <button onClick={submit} disabled={busy} className="rounded-lg bg-gradient-to-r from-indigo-500 to-fuchsia-500 px-3 py-2 text-sm font-medium text-white disabled:opacity-50">{t('cd.post')}</button>
       </div>
       {comments.length === 0 ? (
-        <p className="text-sm opacity-50">No comments yet — be the first.</p>
+        <p className="text-sm opacity-50">{t('cd.noComments')}</p>
       ) : (
         <ul className="flex flex-col gap-2">
           {comments.map((c) => (

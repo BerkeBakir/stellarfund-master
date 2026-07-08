@@ -1,9 +1,11 @@
 'use client';
 import { useEffect, useState } from 'react';
 import { isFollowing, toggleFollow } from '@/lib/follows';
+import { useI18n } from '@/i18n/I18nProvider';
 
 // Watch/unwatch a campaign (localStorage). Small, no wallet required.
 export default function FollowButton({ address }: { address: string }) {
+  const { t } = useI18n();
   const [following, setFollowing] = useState(false);
   const [ready, setReady] = useState(false);
 
@@ -21,7 +23,7 @@ export default function FollowButton({ address }: { address: string }) {
         following ? 'border-fuchsia-400/50 bg-fuchsia-500/10 text-fuchsia-200' : 'border-white/10 hover:bg-white/10'
       }`}
     >
-      {following ? '★ Following' : '☆ Follow'}
+      {following ? t('cd.following') : t('cd.follow')}
     </button>
   );
 }

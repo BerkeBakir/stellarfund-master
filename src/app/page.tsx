@@ -11,14 +11,14 @@ import FirstRunHint from '@/components/FirstRunHint';
 import Subscribe from '@/components/Subscribe';
 import { useAppStore } from '@/store';
 import { getSummary, type Summary } from '@/lib/campaign';
-import { FEEDBACK_FORM_URL, HIDDEN_CAMPAIGNS, ANCHOR_ENABLED } from '@/lib/config';
+import { feedbackFormUrl, HIDDEN_CAMPAIGNS, ANCHOR_ENABLED } from '@/lib/config';
 import { getAllMetadata, type CampaignMeta, CATEGORIES } from '@/lib/metadata';
 import { filterCampaigns } from '@/lib/discovery';
 import { getProofData } from '@/lib/proof';
 import { useI18n } from '@/i18n/I18nProvider';
 
 export default function Home() {
-  const { t } = useI18n();
+  const { t, locale } = useI18n();
   const allCampaigns = useAppStore((s) => s.campaigns);
   const campaigns = allCampaigns.filter((id) => !HIDDEN_CAMPAIGNS.has(id));
   const [summaries, setSummaries] = useState<Record<string, Summary>>({});
@@ -95,7 +95,7 @@ export default function Home() {
             Creator →
           </Link>
           <a
-            href={FEEDBACK_FORM_URL}
+            href={feedbackFormUrl(locale)}
             target="_blank"
             rel="noopener noreferrer"
             className="text-fuchsia-300 underline"

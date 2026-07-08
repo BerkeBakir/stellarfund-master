@@ -1,10 +1,7 @@
+'use client';
 import Link from 'next/link';
 import { sortedChangelog, type ChangeStatus } from '@/lib/changelog';
-
-export const metadata = {
-  title: 'Changelog — StellarFund',
-  description: 'Product updates and roadmap for StellarFund.',
-};
+import { useI18n } from '@/i18n/I18nProvider';
 
 const badge: Record<ChangeStatus, string> = {
   shipped: 'bg-emerald-500/20 text-emerald-300',
@@ -13,13 +10,19 @@ const badge: Record<ChangeStatus, string> = {
 };
 
 export default function ChangelogPage() {
+  const { t } = useI18n();
   const entries = sortedChangelog();
+  const statusLabel: Record<ChangeStatus, string> = {
+    shipped: t('cl.shipped'),
+    'in-progress': t('cl.inProgress'),
+    planned: t('cl.planned'),
+  };
   return (
     <main className="mx-auto flex max-w-3xl flex-col gap-5 p-4 sm:p-6">
       <header className="flex flex-col gap-1">
-        <Link href="/" className="text-xs text-indigo-300 underline">← back</Link>
-        <h1 className="text-2xl font-bold text-gradient">Changelog &amp; roadmap</h1>
-        <p className="text-sm opacity-70">What we shipped, what&apos;s in progress, and what&apos;s next.</p>
+        <Link href="/" className="text-xs text-indigo-300 underline">{t('back')}</Link>
+        <h1 className="text-2xl font-bold text-gradient">{t('cl.title')}</h1>
+        <p className="text-sm opacity-70">{t('cl.subtitle')}</p>
       </header>
 
       <ol className="flex flex-col gap-4">
@@ -27,7 +30,7 @@ export default function ChangelogPage() {
           <li key={`${e.date}-${i}`} className="glass rounded-xl border border-white/10 p-5">
             <div className="mb-2 flex items-center gap-3">
               <span className={`rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-wide ${badge[e.status]}`}>
-                {e.status}
+                {statusLabel[e.status]}
               </span>
               <span className="text-xs opacity-50">{e.date}</span>
             </div>
