@@ -10,7 +10,9 @@ Stellar mainnet — built on the L6 (Black Belt) mainnet app.
 - **Build-in-public metrics:** https://stellarfund-master.vercel.app/metrics
 - **Changelog / product updates:** https://stellarfund-master.vercel.app/changelog
 - **On-chain proof:** https://stellarfund-master.vercel.app/proof
-- **Feedback form:** in-app (config `FEEDBACK_FORM_URL`) → exports to [`docs/feedback/`](feedback/)
+- **Feedback forms (locale-aware):** TR https://docs.google.com/forms/d/e/1FAIpQLSf24RRiIRMArlFupeF-U5ZVfaxFDAvcUwOftGGpBdf62yuZtQ/viewform · EN https://docs.google.com/forms/d/e/1FAIpQLSfzFaDPjI_4iyNo4tLr1po8KYTkyd_km9tsZF0pYV30uhQFRA/viewform → export to [`docs/feedback/`](feedback/)
+- **Security review:** [`docs/SECURITY.md`](SECURITY.md) (contracts + L7 web/off-chain addendum)
+- **Feedback-driven improvement commits:** see the README "Feedback-driven improvements" table
 - **Demo video:** `<add link>`
 - **Twitter/X:** https://x.com/Berkebey001 — product-update posts `<add permalinks>`
 - **Community contribution:** https://dev.to/berkebey01/building-milestone-escrow-crowdfunding-on-soroban-5hc
@@ -26,11 +28,13 @@ Reputation `CCXGJUE6UXPMU27WKJZJS7XXV2NA5ZQPWLPQUJ2XNGDH5TD7L4DMAT5X`, native XL
 - [x] **Monthly growth report** — `/growth` + `docs/GROWTH-REPORT.md`
 - [x] Product analytics & retention — first-party funnel + weekly cohorts in `/stats` and `/metrics`
 - [x] Product update posts surface — `/changelog`
-- [x] Updated documentation — README, this doc, `docs/GROWTH-REPORT.md`, `docs/feedback/`
+- [x] Updated documentation — README, this doc, `docs/GROWTH-REPORT.md`, `docs/SECURITY.md`, `docs/feedback/`
+- [x] **Product-improvement commit links** — README "Feedback-driven improvements" table (real fixes from user testing)
+- [x] Security review document — [`docs/SECURITY.md`](SECURITY.md) (contracts + L7 web addendum) _(optional for L7; included for rigor)_
+- [x] Bilingual product (TR/EN) across the whole app
 - [ ] **Proof of 50+ new mainnet users** — user-driven; tracked honestly on `/proof` + `/metrics` (no fabrication)
 - [ ] **Social media growth (50+ followers)** — user-driven; self-reported in `growthReport.ts`, backed by proof links
 - [ ] User feedback sheet — export the Google Form CSV to `docs/feedback/responses.csv`
-- [ ] Product-improvement commit links — add to README "Feedback-driven improvements" as feedback arrives
 - [ ] Community contribution (new) — publish + link the update posts / tutorial
 
 ## Growth engineering shipped this level

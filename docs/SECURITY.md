@@ -142,5 +142,43 @@ checks, refund-on-miss, and the Reputation registered-caller gate. See each
 
 ---
 
+## 9. Level 7 addendum — web app & off-chain surface
+
+L7 adds no new smart-contract code (the mainnet Factory/Campaign/Reputation contracts
+are unchanged and shared with L6). It does add an off-chain growth layer — Next.js API
+routes backed by Vercel Blob, first-party analytics, referral/share, email capture, and
+a weekly email digest. This section reviews that surface.
+
+### 9.1 Trust model (off-chain)
+
+- **No custody off-chain.** All value stays in the mainnet escrow contract. The web layer
+  only stores *metadata* (campaign titles/images, updates, comments, analytics events,
+  subscriber emails). Compromising it cannot move funds.
+- **Wallet = identity.** There is no password auth; write endpoints are intentionally
+  low-trust and public. Nothing off-chain can authorize an on-chain action — every
+  contribution/release/refund is still `require_auth`-gated and wallet-signed.
+
+### 9.2 Findings & mitigations
+
+| # | Area | Risk | Mitigation |
+|---|---|---|---|
+| W-1 | Analytics ingest (`/api/events`) | Spoofed/padded events (public POST) | **Accepted, low.** Events feed *self-reported* growth metrics, not on-chain proof. On-chain figures (`/proof`, `/metrics`) come only from the contracts and are independently verifiable. No PII stored (`{type, wallet?, campaign?, ref?, ts}` only). |
+| W-2 | Updates/comments (`/api/updates`, `/api/comments`) | Spam / unsolicited content | Server-side length caps + strict `StrKey.isValidContract` validation; one blob per item (no overwrite of others). Author is self-declared and shown only as a public wallet. Future: per-wallet rate limit / signature. |
+| W-3 | Email capture (`/api/subscribe`) | Invalid/duplicate emails, enumeration | Server-side `isValidEmail`; de-dupe via non-reversible `emailKey` so the raw address is not in the blob pathname. Emails are never exposed by any GET route. |
+| W-4 | Weekly digest cron (`/api/cron/digest`) | Unauthorized trigger / send abuse | Guarded by `CRON_SECRET` (Bearer) when set; Brevo send is a no-op unless `BREVO_API_KEY`+`BREVO_SENDER_EMAIL` are configured. Best-effort per-recipient, no address disclosure. |
+| W-5 | Fee sponsorship (`/api/sponsor`) | Sponsor drain | **Disabled in L7** (`GASLESS_ENABLED = false`) — users pay their own (tiny) network fee; the sponsor path is not used. |
+| W-6 | Secrets | Leakage | All secrets are Vercel env vars (never committed). `BLOB_READ_WRITE_TOKEN`, `SPONSOR_SECRET`, `BREVO_API_KEY`, `CRON_SECRET` are server-only; `.env.local` is git-ignored. |
+| W-7 | Blob consistency | Race on concurrent writes | Append-only, one-blob-per-item design (events/updates/comments/subscribers) avoids read-modify-write races; readers tolerate eventual consistency. |
+| W-8 | XSS | User content rendering | Content is rendered as text via React (auto-escaped); no `dangerouslySetInnerHTML` on user input. |
+
+### 9.3 Residual risk & recommendations
+
+- Add per-IP/per-wallet **rate limiting** on the public write endpoints (Vercel WAF or
+  Upstash) if spam appears.
+- Consider **wallet-signed** comments/updates to strongly attribute authorship.
+- Rotate the shared GitHub/Vercel/Brevo tokens after the submission window.
+
+---
+
 _This internal review does not replace an independent professional audit. It is
-provided as the basis for the Level 6 mentor/team security review._
+provided as the basis for the Level 6/7 mentor/team security review._

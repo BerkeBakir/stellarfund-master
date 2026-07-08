@@ -27,8 +27,20 @@ Reputation engine, same mainnet contracts).
 
 ## Feedback-driven improvements
 
-_Real user feedback (Google Form → [`docs/feedback/`](docs/feedback/)) and the shipped fixes
-it drove will be linked here as commits during the month._
+Improvements shipped in direct response to hands-on user testing (each links to the commit):
+
+| Feedback | Shipped fix | Commit |
+|---|---|---|
+| Share buttons (X/Telegram/WhatsApp) didn't open | Rewrote share actions as real links | [`4726b9b`](https://github.com/BerkeBakir/stellarfund-master/commit/4726b9b) |
+| Contributions allowed dust amounts (0.0000001) | Enforced a 0.25 XLM minimum, removed the cap | [`4726b9b`](https://github.com/BerkeBakir/stellarfund-master/commit/4726b9b) |
+| Metrics never updated after connecting/contributing | Fixed a stale service-worker bundle + centralized connect tracking | [`2b80a05`](https://github.com/BerkeBakir/stellarfund-master/commit/2b80a05) |
+| Email signup didn't actually send | Wired the weekly digest to Brevo | [`2b80a05`](https://github.com/BerkeBakir/stellarfund-master/commit/2b80a05) |
+| No visible "release milestone" control for creators | Always-visible release button with an unlock explanation | [`b6918bc`](https://github.com/BerkeBakir/stellarfund-master/commit/b6918bc) |
+| App reverted to English on some pages | Full Turkish/English localization + in-menu language switcher | [`b6918bc`](https://github.com/BerkeBakir/stellarfund-master/commit/b6918bc), [`8106583`](https://github.com/BerkeBakir/stellarfund-master/commit/8106583) |
+| Wanted quicker access to all features | Added a global slide-in navigation menu | [`4726b9b`](https://github.com/BerkeBakir/stellarfund-master/commit/4726b9b) |
+
+_As Google Form responses arrive (→ [`docs/feedback/`](docs/feedback/)), new themes and their
+fixes are appended here._
 📖 **User guide:** [`docs/USER_GUIDE.md`](docs/USER_GUIDE.md)
 📣 **Launch thread:** https://x.com/Berkebey001
 📝 **Technical blog:** https://dev.to/berkebey01/building-milestone-escrow-crowdfunding-on-soroban-5hc
