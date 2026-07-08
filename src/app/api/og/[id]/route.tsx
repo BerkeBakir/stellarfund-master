@@ -29,7 +29,7 @@ export async function GET(_req: Request, ctx: { params: Promise<{ id: string }> 
         <div style={{ fontSize: 30, opacity: 0.8, display: 'flex' }}>StellarFund · {category}</div>
         <div style={{ fontSize: 68, fontWeight: 800, lineHeight: 1.1, display: 'flex' }}>{title}</div>
         <div style={{ fontSize: 28, opacity: 0.85, display: 'flex' }}>
-          Gasless · milestone escrow · on Stellar mainnet
+          Milestone escrow · refunds by code · on Stellar mainnet
         </div>
       </div>
     ),

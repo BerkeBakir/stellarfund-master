@@ -27,7 +27,7 @@ export const SOCIAL: SocialMetrics = {
   communityContributions: 1, // dev.to technical blog (from L6, ongoing)
   highlights: [
     'Launched the Founder-Belt build: analytics pipeline, growth report, referral & creator tooling.',
-    'Gasless contributions keep onboarding friction near zero for new mainnet users.',
+    'Streamlined onboarding (wallet restore, one-step contribute) keeps friction low for new mainnet users.',
     'Build-in-public: live /metrics board and monthly growth report published.',
   ],
   socialProofUrls: [

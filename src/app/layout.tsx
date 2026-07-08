@@ -32,7 +32,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: "StellarFund",
     description:
-      "Milestone-escrow crowdfunding on Stellar. Gasless, transparent, on-chain.",
+      "Milestone-escrow crowdfunding on Stellar. Transparent, refundable, on-chain.",
     url: "https://stellarfund-master.vercel.app",
     siteName: "StellarFund",
     type: "website",

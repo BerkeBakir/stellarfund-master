@@ -21,7 +21,7 @@ export default async function EmbedPage({ params }: { params: Promise<{ id: stri
 
   return (
     <div style={{ fontFamily: 'system-ui, sans-serif', color: 'white', background: 'linear-gradient(135deg,#1e1b4b,#4c1d95)', padding: 16, borderRadius: 12 }}>
-      <div style={{ fontSize: 12, opacity: 0.7 }}>StellarFund · gasless milestone escrow</div>
+      <div style={{ fontSize: 12, opacity: 0.7 }}>StellarFund · milestone escrow</div>
       <div style={{ fontSize: 18, fontWeight: 700, margin: '6px 0' }}>{title}</div>
       <div style={{ height: 8, background: 'rgba(255,255,255,0.15)', borderRadius: 999, overflow: 'hidden' }}>
         <div style={{ width: `${p}%`, height: '100%', background: 'linear-gradient(90deg,#818cf8,#e879f9)' }} />

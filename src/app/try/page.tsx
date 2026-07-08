@@ -25,7 +25,7 @@ export default function TryPage() {
           ['Open the testnet app', 'A full copy of StellarFund running on Stellar testnet.'],
           ['Get free test XLM/USDC', 'One tap funds your wallet — no faucet hunting.'],
           ['Contribute to a demo campaign', 'A real, wallet-signed testnet transaction you can verify.'],
-          ['Ready for the real thing?', 'Come back here and contribute real XLM — gasless.'],
+          ['Ready for the real thing?', 'Come back here and contribute real XLM on mainnet.'],
         ].map(([t, d], i) => (
           <li key={t} className="glass flex gap-3 rounded-xl border border-white/10 p-4">
             <span className="text-lg font-bold text-gradient">{i + 1}</span>
